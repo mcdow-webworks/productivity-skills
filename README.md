@@ -37,17 +37,12 @@ Restart Claude Code to load the plugin.
 2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities)
 3. Enable "Skills" toggle → Click "Upload skill" → Select the ZIP file
 
-### Setup
-
-```bash
-# Create notes directory for note-taking skill
-mkdir -p ~/Documents/notes/$(date +%Y)
-
-# Note: On Windows with OneDrive, use ~/OneDrive/Documents/notes instead
-# The script automatically detects and uses OneDrive if available
-```
-
 ### Start Using It!
+
+**No setup required!** The skill automatically creates your notes directory when you add your first note:
+- Default location: `~/Documents/notes/` (or `~/OneDrive/Documents/notes/` on Windows with OneDrive)
+- Organized by year: `~/Documents/notes/2025/`
+- Monthly files: `11-November.md`, `12-December.md`, etc.
 
 Open any Claude session and say:
 

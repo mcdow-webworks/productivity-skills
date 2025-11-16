@@ -9,28 +9,22 @@ Transform your markdown notes into an AI-navigable knowledge system. Claude beco
 
 ## Quick Start
 
-### Setup (2 minutes)
+**No setup required!** Just start using it in any Claude session:
 
-1. **Create your notes directory**
-   ```bash
-   mkdir -p ~/Documents/notes/$(date +%Y)
-   ```
+```
+"Note that I just discovered a great caching solution"
+```
 
-2. **Configure paths** (optional)
-   By default, notes are stored in `~/Documents/notes/`.
+The skill automatically creates your notes directory on first use:
+- Default location: `~/Documents/notes/`
+- **Windows with OneDrive:** Automatically uses `~/OneDrive/Documents/notes/` if OneDrive is installed, ensuring sync across devices and consistency between Claude Desktop and Claude Code
+- Organized by year: `2025/`, `2026/`, etc.
+- Monthly files: `11-November.md`, `12-December.md`, etc.
 
-   **Windows with OneDrive:** Automatically uses `~/OneDrive/Documents/notes/` if OneDrive is installed, ensuring sync across devices and consistency between Claude Desktop and Claude Code.
-
-   To use a custom location:
-   ```bash
-   export NOTES_DIR="$HOME/my-custom-notes"
-   ```
-
-3. **Start using it**
-   In any Claude session:
-   ```
-   "Note that I just discovered a great caching solution"
-   ```
+**Custom location** (optional):
+```bash
+export NOTES_DIR="$HOME/my-custom-notes"
+```
 
 That's it! Claude now manages your notes across all sessions.
 
