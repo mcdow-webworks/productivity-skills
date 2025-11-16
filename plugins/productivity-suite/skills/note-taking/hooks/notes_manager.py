@@ -44,17 +44,19 @@ def extract_entries(file_path: Path) -> List[Dict]:
     """Extract all entries from a markdown file"""
     if not file_path.exists():
         return []
-    
+
     entries = []
     current_entry = None
-    
+
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             for line in f:
                 # Check if line is a top-level heading (entry start)
                 if line.startswith('# ') and not line.startswith('## '):
                     if current_entry:
-                        entries.append(current_entry)
+                        # Filter out file headers (e.g., "Notes - November 2025")
+                        if not re.match(r'^Notes - \w+ \d{4}$', current_entry['heading']):
+                            entries.append(current_entry)
                     current_entry = {
                         'heading': line.strip('# \n'),
                         'content': '',
@@ -63,12 +65,14 @@ def extract_entries(file_path: Path) -> List[Dict]:
                     }
                 elif current_entry:
                     current_entry['content'] += line
-        
+
         if current_entry:
-            entries.append(current_entry)
+            # Filter out file headers for the last entry too
+            if not re.match(r'^Notes - \w+ \d{4}$', current_entry['heading']):
+                entries.append(current_entry)
     except Exception as e:
         print(f"Error reading {file_path}: {e}", file=sys.stderr)
-    
+
     return entries
 
 def extract_date_from_file(file_path: Path) -> str:
@@ -139,15 +143,15 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
     score = 0
     heading_lower = entry['heading'].lower()
     content_lower = entry['content'].lower()
-    
-    # Exact match in heading (highest priority)
+
+    # Exact phrase match in heading (highest priority)
     if query in heading_lower:
-        score += 100
-    
-    # All terms in heading
-    if all(term in heading_lower for term in query_terms):
+        score += 150  # Increased from 100 to strongly prefer exact matches
+
+    # All terms in heading (but not exact phrase)
+    elif all(term in heading_lower for term in query_terms):
         score += 50
-    
+
     # Individual terms in heading
     for term in query_terms:
         if term in heading_lower:
@@ -157,16 +161,16 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
     for term in query_terms:
         score += content_lower.count(term) * 5
     
-    # Boost recent entries
+    # Boost recent entries (reduced to prevent generic entries from ranking too high)
     try:
         date = datetime.fromisoformat(entry['date'])
         days_old = (datetime.now() - date).days
         if days_old < 30:
-            score += 20
+            score += 10  # Reduced from 20
         elif days_old < 90:
-            score += 10
+            score += 5   # Reduced from 10
         elif days_old < 180:
-            score += 5
+            score += 2   # Reduced from 5
     except:
         pass
     
@@ -175,14 +179,23 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
 def append_to_entry(search_term: str, new_content: str) -> Dict:
     """Find an entry and append content to it"""
     results = search_notes(search_term, max_results=5)
-    
+
     if not results:
         return {
             'status': 'not_found',
             'query': search_term,
             'suggestion': 'No matching entry found. Create a new note?'
         }
-    
+
+    # Require minimum relevance threshold to avoid weak matches
+    if results[0]['relevance'] < 50:
+        return {
+            'status': 'ambiguous',
+            'query': search_term,
+            'alternatives': [{'heading': r['heading'], 'relevance': r['relevance']} for r in results[:3]],
+            'message': 'No strong match found. Please be more specific or use one of these headings.'
+        }
+
     # Use the most relevant result
     target = results[0]
     file_path = NOTES_DIR / target['file']
