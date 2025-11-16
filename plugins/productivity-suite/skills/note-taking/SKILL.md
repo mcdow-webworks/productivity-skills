@@ -1,14 +1,6 @@
 ---
 name: note-taking
 description: Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep
-metadata:
-  version: "1.0.0"
-  category: "productivity"
-  status: "production"
-  documentation:
-    references:
-      - "./templates/monthly-template.md"
 ---
 
 # Note-Taking - AI-Navigable Second Brain
