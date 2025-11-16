@@ -144,22 +144,26 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
     heading_lower = entry['heading'].lower()
     content_lower = entry['content'].lower()
 
-    # Exact phrase match in heading (highest priority)
+    # Exact phrase match in heading (highest priority - overwhelming bonus)
     if query in heading_lower:
-        score += 150  # Increased from 100 to strongly prefer exact matches
+        score += 500  # Massively increased to ensure heading matches always win
 
     # All terms in heading (but not exact phrase)
     elif all(term in heading_lower for term in query_terms):
-        score += 50
+        score += 100  # Increased from 50
 
     # Individual terms in heading
+    else:
+        for term in query_terms:
+            if term in heading_lower:
+                score += 20
+
+    # Terms in content (capped to prevent overwhelming heading matches)
+    content_score = 0
     for term in query_terms:
-        if term in heading_lower:
-            score += 20
-    
-    # Terms in content
-    for term in query_terms:
-        score += content_lower.count(term) * 5
+        content_score += content_lower.count(term) * 5
+    # Cap content contribution at 50 points
+    score += min(content_score, 50)
     
     # Boost recent entries (reduced to prevent generic entries from ranking too high)
     try:
