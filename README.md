@@ -33,7 +33,7 @@ Restart Claude Code to load the plugin.
 
 **Claude Desktop:**
 
-1. Download `note-taking-skill.zip` from [releases](https://github.com/mcdow-webworks/productivity-skills/releases)
+1. Download [note-taking-skill.zip](https://github.com/mcdow-webworks/productivity-skills/raw/main/note-taking-skill.zip)
 2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities)
 3. Enable "Skills" toggle → Click "Upload skill" → Select the ZIP file
 
@@ -64,7 +64,7 @@ That's it! You're now building an AI-navigable second brain.
 ```
 
 **Claude Desktop:**
-Download the latest ZIP from releases and re-upload via Settings > Capabilities → Click skill name → Replace.
+Download the latest [note-taking-skill.zip](https://github.com/mcdow-webworks/productivity-skills/raw/main/note-taking-skill.zip) and re-upload via Settings > Capabilities → Click skill name → Replace.
 
 ## 🚀 Available Skills
 
