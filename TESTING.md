@@ -64,17 +64,34 @@ cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 - Skills should auto-load when working in any project
 - Test with: "Note that manual installation is working"
 
-### Method 3: Manual Installation (Claude Desktop)
+### Method 3: Claude Desktop ZIP Upload (Web & App)
+
+Claude Desktop requires uploading skills as ZIP files through the UI:
 
 ```bash
 cd C:\Projects\productivity-skills
 
-# Copy skills to Claude Desktop directory
-mkdir -p ~/.claude/skills
-cp -r plugins/productivity-suite/skills/* ~/.claude/skills/
+# Create ZIP archive from skill directory
+cd plugins/productivity-suite/skills/note-taking
+zip -r note-taking-skill.zip . -x "*.gz"
 
-# Restart Claude Desktop
+# Or on Windows with PowerShell:
+# powershell -Command "Compress-Archive -Path * -DestinationPath note-taking-skill.zip"
 ```
+
+**Upload Steps:**
+1. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities) (web) or Settings > Capabilities (desktop app)
+2. Enable "Skills" toggle if not already enabled
+3. Click "Upload skill" button
+4. Select `note-taking-skill.zip`
+5. Claude validates the ZIP (must have SKILL.md at root with YAML frontmatter)
+6. Skill becomes available immediately
+
+**ZIP Requirements:**
+- SKILL.md must be at root level (not in subdirectory)
+- SKILL.md must have YAML frontmatter with `name` and `description`
+- Can include hooks/, templates/, and other resource folders
+- Custom skills are private to your account
 
 ## Skill Testing
 

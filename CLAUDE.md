@@ -144,11 +144,24 @@ git clone https://github.com/mcdow-webworks/productivity-skills.git
 cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 ```
 
-**Manual Installation (Claude Desktop):**
+**Manual Installation (Claude Desktop - Web & App):**
 ```bash
-git clone https://github.com/mcdow-webworks/productivity-skills.git
-cp -r plugins/productivity-suite/skills/* ~/.claude/skills/
+# Create ZIP archive of individual skill
+cd plugins/productivity-suite/skills/note-taking
+zip -r note-taking-skill.zip . -x "*.gz"
+
+# Then upload through UI:
+# 1. Go to Settings > Capabilities (claude.ai/settings/capabilities)
+# 2. Enable "Skills" toggle
+# 3. Click "Upload skill" and select note-taking-skill.zip
+# 4. Skill becomes available immediately (private to your account)
 ```
+
+**Important:** Claude Desktop requires ZIP file upload with SKILL.md at root level. The ZIP must contain:
+- SKILL.md (with YAML frontmatter at root)
+- hooks/ folder (scripts)
+- templates/ folder (resources)
+- No nested directories before SKILL.md
 
 **Custom notes directory**:
 ```bash

@@ -41,16 +41,26 @@ mkdir -p "$APPDATA/Claude/plugins"
 cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 ```
 
-**Option 3: Manual Installation (Claude Desktop)**
+**Option 3: Claude Desktop (Web & App)**
 
 ```bash
+# 1. Download or clone the repository
 git clone https://github.com/mcdow-webworks/productivity-skills.git
 cd productivity-skills
 
-# Copy to Claude Desktop skills directory
-mkdir -p ~/.claude/skills
-cp -r plugins/productivity-suite/skills/* ~/.claude/skills/
+# 2. Download the pre-packaged skill ZIP
+# OR create from source:
+cd plugins/productivity-suite/skills/note-taking
+zip -r note-taking-skill.zip . -x "*.gz"
 ```
+
+Then:
+1. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities) or Settings > Capabilities in Claude Desktop
+2. Enable "Skills" toggle
+3. Click "Upload skill" and select `note-taking-skill.zip`
+4. Claude will validate and install the skill
+
+**Note:** Custom skills uploaded to Claude Desktop are private to your account.
 
 ### Setup
 
@@ -315,9 +325,9 @@ If you find these skills useful, please ⭐ star the repo! It helps others disco
 
 ## 💬 Community
 
-- **Issues**: [GitHub Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
-- **Twitter**: [@yourhandle](https://twitter.com/yourhandle)
+- **Issues**: [GitHub Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
+- **Twitter**: [@tonymcdow](https://twitter.com/tonymcdow)
 
 ## 🙏 Acknowledgments
 
@@ -330,9 +340,9 @@ If you find these skills useful, please ⭐ star the repo! It helps others disco
 Need help?
 
 1. Check the [FAQ](docs/faq.md)
-2. Search [existing issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
-3. Open a [new issue](https://github.com/YOUR-USERNAME/productivity-skills/issues/new)
-4. Join the [discussion](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
+2. Search [existing issues](https://github.com/mcdow-webworks/productivity-skills/issues)
+3. Open a [new issue](https://github.com/mcdow-webworks/productivity-skills/issues/new)
+4. Join the [discussion](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 ---
 
