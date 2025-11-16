@@ -17,7 +17,11 @@ Transform your markdown notes into an AI-navigable knowledge system. Claude beco
    ```
 
 2. **Configure paths** (optional)
-   By default, notes are stored in `~/Documents/notes/`. To customize:
+   By default, notes are stored in `~/Documents/notes/`.
+
+   **Windows with OneDrive:** Automatically uses `~/OneDrive/Documents/notes/` if OneDrive is installed, ensuring sync across devices and consistency between Claude Desktop and Claude Code.
+
+   To use a custom location:
    ```bash
    export NOTES_DIR="$HOME/my-custom-notes"
    ```

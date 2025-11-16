@@ -66,6 +66,9 @@ Then:
 ```bash
 # Create notes directory for note-taking skill
 mkdir -p ~/Documents/notes/$(date +%Y)
+
+# Note: On Windows with OneDrive, use ~/OneDrive/Documents/notes instead
+# The script automatically detects and uses OneDrive if available
 ```
 
 ### Start Using It!

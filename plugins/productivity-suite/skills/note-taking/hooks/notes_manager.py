@@ -15,8 +15,19 @@ import re
 from typing import List, Dict, Optional
 
 # Configuration - can be overridden by environment variable
-# Default: ~/Documents/notes on all platforms
-DEFAULT_NOTES_DIR = Path.home() / 'Documents' / 'notes'
+# Default: Prefer OneDrive Documents if available, fall back to local Documents
+# This ensures consistency between Claude Desktop and Claude Code on Windows with OneDrive
+def get_default_notes_dir() -> Path:
+    """Get the default notes directory, preferring OneDrive Documents if it exists"""
+    onedrive_docs = Path.home() / 'OneDrive' / 'Documents' / 'notes'
+    local_docs = Path.home() / 'Documents' / 'notes'
+
+    # Prefer OneDrive Documents if the OneDrive/Documents folder exists
+    if (Path.home() / 'OneDrive' / 'Documents').exists():
+        return onedrive_docs
+    return local_docs
+
+DEFAULT_NOTES_DIR = get_default_notes_dir()
 NOTES_DIR = Path(os.environ.get('NOTES_DIR', DEFAULT_NOTES_DIR))
 INDEX_FILE = NOTES_DIR / '.index.json'
 CONNECTIONS_FILE = NOTES_DIR / '.connections.json'
