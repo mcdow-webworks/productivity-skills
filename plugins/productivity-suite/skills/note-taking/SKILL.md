@@ -434,13 +434,6 @@ This skill embodies the "Second Brain = AI's Interface" philosophy:
 
 Your notes aren't just for you anymore - they're for you and your AI partner.
 
-## What's Next?
-
-After using note-taking for a while:
-- Try the task-management skill (coming soon)
-- Integrate with time-tracking for project analytics
-- Use meeting-notes for structured capture
-
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/mcdow-webworks/productivity-skills/issues)

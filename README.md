@@ -95,18 +95,6 @@ Claude: You have 3 entries showing progression from concept to
         validated to implementation. Ready to move forward?
 ```
 
-### 📋 Task Management (Coming Soon)
-
-AI-assisted todo tracking with automatic prioritization and context awareness.
-
-### ⏱️ Time Tracking (Coming Soon)
-
-Conversational time logging with intelligent categorization and reporting.
-
-### 📅 Meeting Notes (Coming Soon)
-
-Structured capture and retrieval of meeting information with action items.
-
 ## 💡 Why Skills?
 
 ### Traditional Approach
