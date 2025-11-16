@@ -227,15 +227,13 @@ productivity-skills/
 │               └── templates/   # Note templates
 │                   └── monthly-template.md
 ├── docs/                        # Documentation
-│   ├── installation.md
-│   ├── note-taking-guide.md
-│   ├── contributing.md
-│   └── faq.md
-├── examples/                    # Example configurations
-│   ├── claude-code-settings.json
-│   ├── claude-desktop-settings.json
+│   ├── installation.md          # Installation guide
+│   ├── development.md           # Development workflow
+│   ├── contributing.md          # Contributing guidelines
+│   └── faq.md                   # Frequently asked questions
+├── examples/                    # Examples
 │   └── note-taking/
-│       └── sample-notes.md
+│       └── sample-notes.md      # Sample note file
 ├── README.md                    # This file
 ├── CLAUDE.md                    # Repository context for Claude
 ├── LICENSE                      # MIT License
