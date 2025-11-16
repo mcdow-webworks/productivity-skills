@@ -152,7 +152,7 @@ Claude: Shows 3 entries from last week with evolution of thinking
 
 # During work
 You: "Note that we decided to use JWT with refresh tokens"
-Claude: Added and linked to your earlier auth discussion
+Claude: Added! I also found your earlier auth discussion from last week.
 
 # Evening  
 You: "What should I remember from today?"
