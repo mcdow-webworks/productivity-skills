@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Claude Code skills marketplace for AI-native productivity including note-taking, task management, and personal knowledge management",
   "owner": {
-    "name": "McDowell WebWorks",
+    "name": "Tony McDow",
     "email": "info@mcdowell-webworks.com"
   },
   "plugins": [
@@ -13,7 +13,7 @@
       "description": "Complete productivity suite including AI-navigable note-taking, task management, and knowledge capture. Transform markdown notes into a searchable second brain.",
       "version": "1.0.0",
       "author": {
-        "name": "McDowell WebWorks",
+        "name": "Tony McDow",
         "url": "https://github.com/mcdow-webworks"
       },
       "source": "./plugins/productivity-suite",
