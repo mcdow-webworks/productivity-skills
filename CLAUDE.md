@@ -148,7 +148,7 @@ cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 ```bash
 # Create ZIP archive with proper path separators
 # Use the provided Python script (ensures forward slashes)
-python create-skill-zip.py
+python scripts/create-skill-zip.py
 
 # Then upload through UI:
 # 1. Go to Settings > Capabilities (claude.ai/settings/capabilities)

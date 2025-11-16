@@ -50,7 +50,7 @@ cd productivity-skills
 
 # 2. Download the pre-packaged skill ZIP from releases
 # OR create from source (use Python to ensure proper path separators):
-python create-skill-zip.py
+python scripts/create-skill-zip.py
 ```
 
 Then:
@@ -220,6 +220,7 @@ Claude: Analyzing 23 entries... Three main themes:
 ## 📚 Documentation
 
 - **[Installation Guide](docs/installation.md)** - Detailed setup for Claude Code & Desktop
+- **[Development Guide](docs/development.md)** - Modifying skills and development workflow
 - **[Note-Taking Guide](docs/note-taking-guide.md)** - Comprehensive note-taking usage
 - **[Contributing](docs/contributing.md)** - How to add new skills
 - **[FAQ](docs/faq.md)** - Common questions

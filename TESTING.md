@@ -73,7 +73,7 @@ cd C:\Projects\productivity-skills
 
 # Create ZIP archive with proper path separators (forward slashes)
 # IMPORTANT: Use Python script to ensure Claude Desktop compatibility
-python create-skill-zip.py
+python scripts/create-skill-zip.py
 
 # Note: PowerShell Compress-Archive creates backslashes which Claude Desktop rejects
 # The Python script ensures paths use forward slashes (/) as required by ZIP spec

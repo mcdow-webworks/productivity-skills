@@ -46,7 +46,10 @@ def create_skill_zip(skill_dir, output_zip):
             print(f"  {info.filename}")
 
 if __name__ == '__main__':
-    skill_directory = 'plugins/productivity-suite/skills/note-taking'
-    output_file = 'note-taking-skill.zip'
+    # Get the project root directory (parent of scripts/)
+    project_root = Path(__file__).parent.parent
+
+    skill_directory = project_root / 'plugins/productivity-suite/skills/note-taking'
+    output_file = project_root / 'note-taking-skill.zip'
 
     create_skill_zip(skill_directory, output_file)
