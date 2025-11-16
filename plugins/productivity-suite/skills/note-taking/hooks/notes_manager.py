@@ -84,15 +84,16 @@ def extract_date_from_file(file_path: Path) -> str:
 def add_note(heading: str, content: str, category: Optional[str] = None) -> Dict:
     """Add a new note entry to current month's file"""
     month_file = get_current_month_file()
-    
+
     # Ensure file exists
     if not month_file.exists():
         month_file.touch()
         month_file.write_text("# Notes - " + datetime.now().strftime("%B %Y") + "\n\n")
-    
-    # Format the entry
-    entry = f"\n# {heading}\n{content.strip()}\n"
-    
+
+    # Format the entry with creation timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d")
+    entry = f"\n# {heading}\n{content.strip()}\n\n**Created:** {timestamp}\n"
+
     # Append to file
     with open(month_file, 'a', encoding='utf-8') as f:
         f.write(entry)
