@@ -37,6 +37,8 @@ Restart Claude Code to load the plugin.
 2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities)
 3. Enable "Skills" toggle → Click "Upload skill" → Select the ZIP file
 
+**Important:** Claude Desktop requires file system permissions to access your Documents folder. See [Getting Started with Local MCP Servers](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop) for details on configuring file read/write/create permissions.
+
 ### Start Using It!
 
 **No setup required!** The skill automatically creates your notes directory when you add your first note:

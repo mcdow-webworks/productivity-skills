@@ -20,6 +20,8 @@ Restart Claude Code to load the plugin.
 3. Enable "Skills" toggle
 4. Click "Upload skill" → Select ZIP file
 
+**File System Permissions:** Claude Desktop requires file system permissions to access your Documents folder for reading and writing notes. You'll need to configure these permissions in your Claude Desktop settings. See [Getting Started with Local MCP Servers](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop) for detailed instructions on granting file access.
+
 **Note:** No additional setup required! The skill automatically creates the notes directory (`~/Documents/notes` or `~/OneDrive/Documents/notes` on Windows with OneDrive) when you add your first note.
 
 ### Custom Notes Location (Optional)
