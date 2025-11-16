@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Personal notes (users should version control their own notes separately)
+# These patterns are here as examples if someone puts notes in the repo
+notes/
+my-notes/
+*.private.md
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+
+# Generated indexes (should be regenerated)
+.index.json
+.connections.json

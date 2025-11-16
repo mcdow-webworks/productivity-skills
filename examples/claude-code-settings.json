@@ -1,0 +1,33 @@
+{
+  "$schema": "https://claude.ai/schemas/settings.json",
+  "projectDefaults": {
+    "skillDirectories": [
+      "~/productivity-skills"
+    ],
+    "memoryEnabled": true
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If this session accomplished anything notable, suggest in one sentence what could be noted. If nothing notable, output nothing."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Session active in: $(basename \"$CLAUDE_PROJECT_DIR\")\""
+          }
+        ]
+      }
+    ]
+  }
+}
