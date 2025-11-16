@@ -203,10 +203,13 @@ Claude: Analyzing 23 entries... Three main themes:
 
 ## 🔧 Requirements
 
+**Required:**
 - **Claude Code** 2.0+ or **Claude Desktop**
-- **Bash** shell (for optional hooks)
-- **Python** 3.7+ (for utility scripts)
-- **Git** (for version control)
+- **Python** 3.7+ (for notes_manager.py utility)
+- **Bash** shell (for hooks)
+
+**Optional:**
+- **Git** (for version controlling your notes)
 
 ## 📂 Repository Structure
 
