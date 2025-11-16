@@ -50,19 +50,26 @@ productivity-skills/
    - Statistics and analytics
 
 2. **Relevance Scoring Algorithm** (in `calculate_relevance`):
-   - Exact heading match: +100 points
-   - All query terms in heading: +50 points
+   - File headers filtered out (e.g., "Notes - November 2025" not searchable)
+   - Exact phrase match in heading: +500 points (overwhelming bonus)
+   - All query terms in heading: +100 points
    - Individual terms in heading: +20 each
-   - Terms in content: +5 per occurrence
-   - Recency boost: +20 (< 30 days), +10 (< 90 days), +5 (< 180 days)
+   - Terms in content: capped at +50 total (prevents content from overwhelming heading matches)
+   - Recency boost: +10 (< 30 days), +5 (< 90 days), +2 (< 180 days)
+   - Minimum relevance threshold: ≥50 required for updates (prevents weak matches)
 
 3. **Entry Format**:
    ```markdown
    # Category - Brief description
    Content with multiple lines, code blocks, links, etc.
 
+   **Created:** YYYY-MM-DD
+
    **Update (YYYY-MM-DD):** Additional information
    ```
+
+   - New entries automatically get `**Created:** YYYY-MM-DD` timestamp
+   - Updates automatically get `**Update (YYYY-MM-DD):**` timestamp
 
 **Interaction Patterns:**
 
@@ -86,13 +93,22 @@ Since this is a skills plugin (not a traditional development project), there are
 2. **Python Script Testing**:
    ```bash
    # Test notes_manager.py directly
-   echo '{"command":"search","query":"test"}' | python3 note-taking/hooks/notes_manager.py
+   cd plugins/productivity-suite/skills/note-taking
+
+   # Search notes
+   echo '{"command":"search","query":"test"}' | python hooks/notes_manager.py
+
+   # Add new note
+   echo '{"command":"add","heading":"Test - Note","content":"Test content"}' | python hooks/notes_manager.py
+
+   # Append to existing note (use search_term parameter)
+   echo '{"command":"append","search_term":"Test","content":"Update content"}' | python hooks/notes_manager.py
 
    # Reindex notes
-   echo '{"command":"reindex"}' | python3 note-taking/hooks/notes_manager.py
+   echo '{"command":"reindex"}' | python hooks/notes_manager.py
 
    # Get statistics
-   echo '{"command":"stats"}' | python3 note-taking/hooks/notes_manager.py
+   echo '{"command":"stats"}' | python hooks/notes_manager.py
    ```
 
 ## Adding New Skills
@@ -205,15 +221,26 @@ export NOTES_DIR="$HOME/my-custom-notes"
 
 **Entry Extraction**:
 - Top-level headings (`# `) mark new entries
+- File headers (e.g., "Notes - November 2025") are automatically filtered out
 - Second-level headings (`## `) are part of entry content
 - Entries can span multiple lines
-- Updates are appended with timestamps
+- New entries get automatic `**Created:** YYYY-MM-DD` timestamp
+- Updates are appended with `**Update (YYYY-MM-DD):**` timestamps
 
 **Search Implementation**:
 - Searches newest files first (reverse chronological)
 - Returns top 10 results by default (configurable)
 - Truncates content preview to 300 characters
 - Provides relevance scores for ranking
+- File headers automatically excluded from search results
+- Exact phrase matches in headings heavily prioritized (+500 bonus)
+- Content scoring capped at +50 to prevent overwhelming heading matches
+
+**Update Implementation**:
+- Requires minimum relevance score of ≥50 to prevent weak matches
+- Returns alternatives when no strong match found
+- Ensures entries don't get "fouled up" with incorrect updates
+- Uses `search_term` parameter (not `search`) in JSON interface
 
 ## Git Workflow Notes
 
