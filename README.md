@@ -18,42 +18,48 @@ Instead of just asking Claude questions, these skills make Claude an **active pa
 
 All while keeping your data local in simple markdown files.
 
-## ✨ Quick Start (5 Minutes)
+## ✨ Quick Start (2 Minutes)
 
-### 1. Clone this repository
+### Installation
 
-```bash
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git ~/productivity-skills
-```
-
-### 2. Configure Claude
-
-**For Claude Code**, add to `~/.claude/settings.json`:
-
-```json
-{
-  "projectDefaults": {
-    "skillDirectories": ["~/productivity-skills"]
-  }
-}
-```
-
-**For Claude Desktop**, add to your settings (Preferences → Advanced):
-
-```json
-{
-  "skillDirectories": ["~/productivity-skills"]
-}
-```
-
-### 3. Set up your first skill
+**Option 1: Install via Claude Code Plugin Marketplace (Recommended)**
 
 ```bash
-# For note-taking
+# In Claude Code, run:
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
+```
+
+**Option 2: Manual Installation (Claude Code)**
+
+```bash
+git clone https://github.com/mcdow-webworks/productivity-skills.git
+cd productivity-skills
+
+# Copy to Claude Code plugins directory
+mkdir -p "$APPDATA/Claude/plugins"
+cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
+```
+
+**Option 3: Manual Installation (Claude Desktop)**
+
+```bash
+git clone https://github.com/mcdow-webworks/productivity-skills.git
+cd productivity-skills
+
+# Copy to Claude Desktop skills directory
+mkdir -p ~/.claude/skills
+cp -r plugins/productivity-suite/skills/* ~/.claude/skills/
+```
+
+### Setup
+
+```bash
+# Create notes directory for note-taking skill
 mkdir -p ~/notes/$(date +%Y)
 ```
 
-### 4. Start using it!
+### Start Using It!
 
 Open any Claude session and say:
 
@@ -76,7 +82,7 @@ Transform markdown notes into an AI-navigable knowledge system. Claude becomes y
 - Pattern recognition and insight generation
 - Maintains simple markdown format
 
-[Full Note-Taking Documentation →](note-taking/SKILL.md)
+[Full Note-Taking Documentation →](plugins/productivity-suite/skills/note-taking/SKILL.md)
 
 **Example Usage:**
 ```
@@ -220,29 +226,31 @@ Claude: Analyzing 23 entries... Three main themes:
 
 ```
 productivity-skills/
-├── SKILL.md                     # Main skill descriptor
-├── README.md                    # This file
-├── LICENSE                      # MIT License
-├── .gitignore                   # Git ignore patterns
-│
-├── note-taking/                 # Note-taking skill
-│   ├── SKILL.md                 # Skill documentation
-│   ├── hooks/                   # Utility scripts
-│   │   └── notes_manager.py
-│   └── templates/               # Note templates
-│       └── monthly-template.md
-│
+├── .claude-plugin/
+│   └── marketplace.json         # Marketplace manifest
+├── plugins/
+│   └── productivity-suite/      # Main plugin (self-contained)
+│       └── skills/              # Production skills
+│           └── note-taking/     # Note-taking skill
+│               ├── SKILL.md     # Skill definition
+│               ├── hooks/       # Utility scripts
+│               │   └── notes_manager.py
+│               └── templates/   # Note templates
+│                   └── monthly-template.md
 ├── docs/                        # Documentation
 │   ├── installation.md
 │   ├── note-taking-guide.md
 │   ├── contributing.md
 │   └── faq.md
-│
-└── examples/                    # Example configurations
-    ├── claude-code-settings.json
-    ├── claude-desktop-settings.json
-    └── note-taking/
-        └── sample-notes.md
+├── examples/                    # Example configurations
+│   ├── claude-code-settings.json
+│   ├── claude-desktop-settings.json
+│   └── note-taking/
+│       └── sample-notes.md
+├── README.md                    # This file
+├── CLAUDE.md                    # Repository context for Claude
+├── LICENSE                      # MIT License
+└── .gitignore                   # Git ignore patterns
 ```
 
 ## 🤝 Contributing

@@ -14,16 +14,23 @@ This is a **Claude Skills marketplace plugin** that provides AI-native productiv
 
 ```
 productivity-skills/
-├── SKILL.md                      # Main skill descriptor (read by Claude)
-├── note-taking/                  # Primary skill implementation
-│   ├── SKILL.md                  # Detailed skill documentation
-│   ├── hooks/
-│   │   └── notes_manager.py      # Python utility for note operations
-│   └── templates/
-│       └── monthly-template.md
+├── .claude-plugin/
+│   └── marketplace.json          # Plugin marketplace manifest
+├── plugins/
+│   └── productivity-suite/       # Self-contained plugin bundle
+│       └── skills/               # Production-ready skills
+│           └── note-taking/      # Primary skill implementation
+│               ├── SKILL.md      # Skill definition with YAML frontmatter
+│               ├── hooks/
+│               │   └── notes_manager.py  # Python utility for note operations
+│               └── templates/
+│                   └── monthly-template.md
 ├── docs/                         # User documentation
-└── examples/                     # Configuration examples
+├── examples/                     # Configuration examples
+└── README.md                     # User-facing documentation
 ```
+
+**Important:** This repository follows the Claude Code plugin marketplace pattern, NOT the simple skillDirectories approach. The root contains NO SKILL.md - individual skills are in `plugins/productivity-suite/skills/`.
 
 ### Note-Taking Skill Architecture
 
@@ -91,41 +98,68 @@ Since this is a skills plugin (not a traditional development project), there are
 
 When creating additional skills (task-management, time-tracking, etc.):
 
-1. Create a new directory: `skill-name/`
-2. Add `SKILL.md` with clear documentation
-3. Include trigger phrases and examples
-4. Add supporting scripts in `hooks/` (Python 3.7+)
-5. Scripts should accept JSON via stdin, output JSON to stdout
-6. Follow the note-taking skill as a template
+1. Create a new directory in `plugins/productivity-suite/skills/`: `skill-name/`
+2. Add `SKILL.md` with YAML frontmatter and clear documentation
+3. Include `name` and `description` in frontmatter (REQUIRED)
+4. Include trigger phrases and examples in the body
+5. Add supporting scripts in `hooks/` (Python 3.7+)
+6. Scripts should accept JSON via stdin, output JSON to stdout
+7. Update `.claude-plugin/marketplace.json` to include new skill
+8. Follow the note-taking skill as a template
 
-**Critical**: SKILL.md is what Claude reads to understand the skill. Make it:
-- Clear and concise
+**Critical**: SKILL.md must have YAML frontmatter. Required fields:
+```yaml
+---
+name: skill-identifier
+description: What the skill does AND when to use it (max 1024 chars)
+---
+```
+
+Optional frontmatter fields:
+- `allowed-tools`: Restrict which tools Claude can use
+- `metadata.version`: Semantic versioning
+- `metadata.category`: Skill category
+- `metadata.status`: production, beta, experimental
+- `metadata.documentation`: References to additional docs
+
+**Body Content:**
+- Clear and concise (under 500 lines recommended)
 - Example-driven
 - Include conversational trigger phrases
 - Document edge cases and error handling
+- Use progressive disclosure (move details to reference files)
 
-## Configuration
+## Distribution & Installation
 
-**For Claude Code** - Add to `~/.claude/settings.json`:
-```json
-{
-  "projectDefaults": {
-    "skillDirectories": ["~/productivity-skills"]
-  }
-}
+**Plugin Marketplace Distribution (Recommended):**
+```bash
+# Install from Claude Code marketplace
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
 ```
 
-**For Claude Desktop** - Add to settings:
-```json
-{
-  "skillDirectories": ["~/productivity-skills"]
-}
+**Manual Installation (Claude Code):**
+```bash
+git clone https://github.com/mcdow-webworks/productivity-skills.git
+cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
+```
+
+**Manual Installation (Claude Desktop):**
+```bash
+git clone https://github.com/mcdow-webworks/productivity-skills.git
+cp -r plugins/productivity-suite/skills/* ~/.claude/skills/
 ```
 
 **Custom notes directory**:
 ```bash
 export NOTES_DIR="$HOME/my-custom-notes"
 ```
+
+**Marketplace Configuration:**
+- Marketplace manifest: `.claude-plugin/marketplace.json`
+- Plugin name: `productivity-suite`
+- Marketplace name: `productivity-skills`
+- Current version: 1.0.0
 
 ## Philosophy & Design Principles
 

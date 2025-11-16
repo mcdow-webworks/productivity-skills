@@ -47,3 +47,9 @@ my-notes/
 # Generated indexes (should be regenerated)
 .index.json
 .connections.json
+
+# Compressed files (gzip archives)
+*.gz
+
+# Local Claude settings (user-specific)
+.claude/settings.local.json
