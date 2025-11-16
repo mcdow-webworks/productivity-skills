@@ -30,16 +30,7 @@ Yes! Once configured, skills work in both environments seamlessly.
 
 ## Installation & Setup
 
-### Where should I install this?
-
-The recommended location is `~/productivity-skills`, but you can install anywhere:
-
-```bash
-cd ~/Documents
-git clone https://github.com/mcdow-webworks/productivity-skills.git
-```
-
-Just update your settings.json with the actual path.
+For installation instructions, see the **[Installation Guide](installation.md)**.
 
 ### How do I know if skills are loaded?
 
@@ -54,15 +45,6 @@ Or try using a skill:
 ```
 
 If Claude responds appropriately, skills are loaded!
-
-### Do I need to restart Claude after installing?
-
-**Claude Code**: Yes, restart your terminal session
-**Claude Desktop**: Yes, quit and reopen the app
-
-### Can I use this in a project subdirectory?
-
-Yes! Skills configured globally work in any directory. You can also add project-specific skills by creating `.claude/skills/` in your project.
 
 ## Usage Questions
 
@@ -199,10 +181,11 @@ This means Claude Code isn't installed or not in PATH. See [Claude Code installa
 ### "Claude doesn't respond to note commands"
 
 **Checklist:**
-1. Are skills configured in settings.json?
-2. Does the directory exist? `ls ~/productivity-skills/`
-3. Did you restart Claude after configuration?
-4. Try: `"What skills do you have access to?"`
+1. Is the plugin installed? `/plugin list`
+2. Did you restart Claude after installation?
+3. Try: `"What skills do you have access to?"`
+
+If not installed, see the [Installation Guide](installation.md).
 
 ### "Notes aren't saving"
 
@@ -232,9 +215,7 @@ chmod +x ~/productivity-skills/note-taking/hooks/notes_manager.py
 
 ### "Works in Claude Code but not Claude Desktop"
 
-Make sure you configured settings for both. They use separate config files:
-- Claude Code: `~/.claude/settings.json`
-- Claude Desktop: OS-specific (see installation guide)
+Claude Code and Claude Desktop use different installation methods. See the [Installation Guide](installation.md) for platform-specific instructions.
 
 ## Platform-Specific
 
@@ -245,15 +226,6 @@ Make sure you configured settings for both. They use separate config files:
 chmod +x ~/productivity-skills/note-taking/hooks/*.py
 ```
 
-### Windows: Path not working
-
-Use forward slashes or double backslashes:
-```json
-{
-  "skillDirectories": ["C:/Users/YourName/productivity-skills"]
-}
-```
-
 ### WSL: Can't find files
 
 Make sure you're using Linux paths (`~`) inside WSL, not Windows paths (`C:\`).
@@ -262,7 +234,7 @@ Make sure you're using Linux paths (`~`) inside WSL, not Windows paths (`C:\`).
 
 ### Can I add hooks for automatic capture?
 
-Yes! See [examples/claude-code-settings.json](../examples/claude-code-settings.json) for hook examples.
+Yes! Claude Code supports hooks for automatic actions. See the [Claude Code documentation](https://docs.claude.com/en/docs/claude-code) for details on configuring hooks.
 
 ### Can I integrate with other tools?
 
