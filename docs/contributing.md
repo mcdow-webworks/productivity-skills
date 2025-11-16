@@ -31,7 +31,7 @@ Thank you for your interest in contributing! This guide will help you add new sk
 
 ```bash
 # Fork the repo on GitHub, then:
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git
+git clone https://github.com/mcdow-webworks/productivity-skills.git
 cd productivity-skills
 git remote add upstream https://github.com/ORIGINAL-OWNER/productivity-skills.git
 ```
@@ -474,9 +474,9 @@ Contributors get:
 
 ## 📬 Questions?
 
-- **General questions**: [Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
-- **Bug reports**: [Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
-- **Feature requests**: [Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
+- **General questions**: [Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
+- **Bug reports**: [Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
+- **Feature requests**: [Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
 
 ## 📄 License
 

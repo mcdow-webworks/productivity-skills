@@ -36,7 +36,7 @@ The recommended location is `~/productivity-skills`, but you can install anywher
 
 ```bash
 cd ~/Documents
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git
+git clone https://github.com/mcdow-webworks/productivity-skills.git
 ```
 
 Just update your settings.json with the actual path.
@@ -326,9 +326,9 @@ Maybe! Open a feature request issue. Better yet, build it yourself and contribut
 
 1. Check this FAQ
 2. Read [Installation Guide](installation.md)
-3. Search [existing issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
-4. Open a [new issue](https://github.com/YOUR-USERNAME/productivity-skills/issues/new)
-5. Ask in [Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
+3. Search [existing issues](https://github.com/mcdow-webworks/productivity-skills/issues)
+4. Open a [new issue](https://github.com/mcdow-webworks/productivity-skills/issues/new)
+5. Ask in [Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 ### How can I contribute?
 
@@ -341,7 +341,7 @@ See [Contributing Guide](contributing.md)! We welcome:
 
 ### Where can I share my setup?
 
-Share in [Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions) under "Show and Tell"!
+Share in [Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions) under "Show and Tell"!
 
 ### Is there a community chat?
 
@@ -371,7 +371,7 @@ That's your choice. Notes are local markdown files with standard file permission
 ## Still Have Questions?
 
 Open an issue or discussion on GitHub:
-- [Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
-- [Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
+- [Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
+- [Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 We're here to help!

@@ -456,9 +456,9 @@ After using note-taking for a while:
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
+- **Issues**: [GitHub Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
 - **Examples**: See [examples/note-taking/](../../examples/)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
+- **Discussions**: [GitHub Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 ---
 

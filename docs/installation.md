@@ -117,13 +117,13 @@ git --version
 **Default** (recommended):
 ```bash
 cd ~
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git productivity-skills
+git clone https://github.com/mcdow-webworks/productivity-skills.git productivity-skills
 ```
 
 **Custom location**:
 ```bash
 cd /path/to/your/location
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git productivity-skills
+git clone https://github.com/mcdow-webworks/productivity-skills.git productivity-skills
 ```
 
 If using a custom location, update paths in configuration accordingly.
@@ -331,7 +331,7 @@ Recommended approach: Use WSL2 with Ubuntu.
 2. **Inside WSL**, follow Linux instructions:
    ```bash
    cd ~
-   git clone https://github.com/YOUR-USERNAME/productivity-skills.git productivity-skills
+   git clone https://github.com/mcdow-webworks/productivity-skills.git productivity-skills
    ```
 
 3. **Configure paths** in `~/.claude/settings.json` (inside WSL):
@@ -361,7 +361,7 @@ Recommended approach: Use WSL2 with Ubuntu.
 1. **Clone with Git Bash**:
    ```bash
    cd ~
-   git clone https://github.com/YOUR-USERNAME/productivity-skills.git productivity-skills
+   git clone https://github.com/mcdow-webworks/productivity-skills.git productivity-skills
    ```
 
 2. **Configure** `%USERPROFILE%\.claude\settings.json`:
@@ -552,7 +552,7 @@ Or:
 Still having issues?
 
 1. **Check FAQ**: [docs/faq.md](faq.md)
-2. **Search issues**: [GitHub Issues](https://github.com/YOUR-USERNAME/productivity-skills/issues)
+2. **Search issues**: [GitHub Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
 3. **Open new issue**: Include:
    - Your platform (OS, Claude version)
    - Configuration file content
@@ -566,7 +566,7 @@ After installation:
 1. ✅ Read [Note-Taking Guide](note-taking-guide.md)
 2. ✅ Try [Example Workflows](../README.md#-example-workflows)
 3. ✅ Explore [Examples](../examples/)
-4. ✅ Join [Discussions](https://github.com/YOUR-USERNAME/productivity-skills/discussions)
+4. ✅ Join [Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 ---
 
