@@ -146,9 +146,9 @@ cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 
 **Manual Installation (Claude Desktop - Web & App):**
 ```bash
-# Create ZIP archive of individual skill
-cd plugins/productivity-suite/skills/note-taking
-zip -r note-taking-skill.zip . -x "*.gz"
+# Create ZIP archive with proper path separators
+# Use the provided Python script (ensures forward slashes)
+python create-skill-zip.py
 
 # Then upload through UI:
 # 1. Go to Settings > Capabilities (claude.ai/settings/capabilities)

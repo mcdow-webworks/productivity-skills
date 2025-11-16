@@ -48,10 +48,9 @@ cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 git clone https://github.com/mcdow-webworks/productivity-skills.git
 cd productivity-skills
 
-# 2. Download the pre-packaged skill ZIP
-# OR create from source:
-cd plugins/productivity-suite/skills/note-taking
-zip -r note-taking-skill.zip . -x "*.gz"
+# 2. Download the pre-packaged skill ZIP from releases
+# OR create from source (use Python to ensure proper path separators):
+python create-skill-zip.py
 ```
 
 Then:

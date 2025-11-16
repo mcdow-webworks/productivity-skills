@@ -71,12 +71,12 @@ Claude Desktop requires uploading skills as ZIP files through the UI:
 ```bash
 cd C:\Projects\productivity-skills
 
-# Create ZIP archive from skill directory
-cd plugins/productivity-suite/skills/note-taking
-zip -r note-taking-skill.zip . -x "*.gz"
+# Create ZIP archive with proper path separators (forward slashes)
+# IMPORTANT: Use Python script to ensure Claude Desktop compatibility
+python create-skill-zip.py
 
-# Or on Windows with PowerShell:
-# powershell -Command "Compress-Archive -Path * -DestinationPath note-taking-skill.zip"
+# Note: PowerShell Compress-Archive creates backslashes which Claude Desktop rejects
+# The Python script ensures paths use forward slashes (/) as required by ZIP spec
 ```
 
 **Upload Steps:**
