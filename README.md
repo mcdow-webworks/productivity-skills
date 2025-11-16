@@ -22,44 +22,20 @@ All while keeping your data local in simple markdown files.
 
 ### Installation
 
-**Option 1: Install via Claude Code Plugin Marketplace (Recommended)**
+**Claude Code:**
 
 ```bash
-# In Claude Code, run:
 /plugin marketplace add mcdow-webworks/productivity-skills
 /plugin install productivity-suite@productivity-skills
 ```
 
-**Option 2: Manual Installation (Claude Code)**
+Restart Claude Code to load the plugin.
 
-```bash
-git clone https://github.com/mcdow-webworks/productivity-skills.git
-cd productivity-skills
+**Claude Desktop:**
 
-# Copy to Claude Code plugins directory
-mkdir -p "$APPDATA/Claude/plugins"
-cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
-```
-
-**Option 3: Claude Desktop (Web & App)**
-
-```bash
-# 1. Download or clone the repository
-git clone https://github.com/mcdow-webworks/productivity-skills.git
-cd productivity-skills
-
-# 2. Download the pre-packaged skill ZIP from releases
-# OR create from source (use Python to ensure proper path separators):
-python scripts/create-skill-zip.py
-```
-
-Then:
-1. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities) or Settings > Capabilities in Claude Desktop
-2. Enable "Skills" toggle
-3. Click "Upload skill" and select `note-taking-skill.zip`
-4. Claude will validate and install the skill
-
-**Note:** Custom skills uploaded to Claude Desktop are private to your account.
+1. Download `note-taking-skill.zip` from [releases](https://github.com/mcdow-webworks/productivity-skills/releases)
+2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities)
+3. Enable "Skills" toggle → Click "Upload skill" → Select the ZIP file
 
 ### Setup
 
@@ -80,6 +56,18 @@ Open any Claude session and say:
 ```
 
 That's it! You're now building an AI-navigable second brain.
+
+### Updating
+
+**Claude Code:**
+```bash
+/plugin marketplace remove productivity-skills
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
+```
+
+**Claude Desktop:**
+Download the latest ZIP from releases and re-upload via Settings > Capabilities → Click skill name → Replace.
 
 ## 🚀 Available Skills
 

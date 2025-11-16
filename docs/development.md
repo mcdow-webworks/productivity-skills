@@ -11,15 +11,18 @@ Complete guide for developing and modifying Productivity Skills for Claude Code 
 # 2. Regenerate ZIP
 python scripts/create-skill-zip.py
 
-# 3. Re-upload in Claude Desktop:
-#    Settings > Capabilities > Click skill name > Replace
+# 3. Re-upload: Settings > Capabilities > Click skill name > Replace
 ```
 
 ### Modifying Skills for Claude Code
 
 ```bash
-# 1. Edit skill files in plugins directory
-# 2. Restart Claude Code terminal session
+# 1. Edit skill files
+# 2. Commit and push to GitHub
+# 3. Update in Claude Code:
+/plugin marketplace remove productivity-skills
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
 ```
 
 ---
@@ -158,64 +161,35 @@ If the skill doesn't respond correctly:
 
 ## Claude Code Development Workflow
 
-Claude Code supports **direct plugin directory** installation for development.
-
-### 1. Install for Development
-
-**Option A: Manual Copy (Recommended for Development)**
+### 1. Edit Skill Files
 
 ```bash
-# Copy plugin to Claude Code plugins directory
-mkdir -p "$APPDATA/Claude/plugins"
-cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
-
-# Or on macOS/Linux
-mkdir -p ~/.config/Claude/plugins
-cp -r plugins/productivity-suite ~/.config/Claude/plugins/
-```
-
-**Option B: Symlink (Advanced)**
-
-```bash
-# Create symlink for live development
-ln -s "$(pwd)/plugins/productivity-suite" "$APPDATA/Claude/plugins/productivity-suite"
-```
-
-With symlinks, edits are immediately available (after restart).
-
-### 2. Edit Skill Files
-
-```bash
-# Edit directly in the plugins directory
+# Edit files in your local repository
 nano plugins/productivity-suite/skills/note-taking/SKILL.md
-
-# Or edit in the copied location
-nano "$APPDATA/Claude/plugins/productivity-suite/skills/note-taking/SKILL.md"
+nano plugins/productivity-suite/skills/note-taking/hooks/notes_manager.py
 ```
 
-### 3. Reload Changes
-
-**Full restart (recommended):**
+### 2. Commit and Push
 
 ```bash
-# Exit Claude Code terminal
-exit
-
-# Start new Claude Code session
-claude
+git add -A
+git commit -m "Description of changes"
+git push origin main
 ```
 
-**Soft reload (if using symlinks):**
+### 3. Update Plugin
 
-Some changes may be picked up without restart, but full restart is more reliable.
+```bash
+/plugin marketplace remove productivity-skills
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
+```
+
+Restart Claude Code to load the updated plugin.
 
 ### 4. Test Changes
 
-```bash
-cd ~/any-project
-claude
-
-# Test the skill
+```
 "Note that I'm testing my changes"
 ```
 
