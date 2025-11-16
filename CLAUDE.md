@@ -242,6 +242,26 @@ export NOTES_DIR="$HOME/my-custom-notes"
 - Ensures entries don't get "fouled up" with incorrect updates
 - Uses `search_term` parameter (not `search`) in JSON interface
 
+## Key Learnings
+
+### 2025-11-16: OneDrive Path Detection Critical for Windows Users
+Windows with OneDrive creates two `Documents` folders (local and synced). Claude Desktop and Claude Code may use different paths by default. Solution: Implement automatic detection that prefers `~/OneDrive/Documents/notes` when OneDrive folder exists. This ensures consistency across both platforms.
+
+### 2025-11-16: Entry Matching Requires Aggressive Heading Prioritization
+Initial relevance scoring allowed content matches to overwhelm heading matches, causing updates to target wrong entries. Solution: Exact phrase match in heading gets +500 points (vs +5 per content term), content scoring capped at +50 total, minimum threshold of ≥50 required for updates. This prevents "fouled up" entries.
+
+### 2025-11-16: File Headers Must Be Filtered from Search
+File headers like "Notes - November 2025" were appearing in search results and could be matched for updates. Solution: Filter them during entry extraction using regex pattern `^Notes - \w+ \d{4}$`. This prevents accidental updates to file headers.
+
+### 2025-11-16: Automatic Timestamps Essential for Context
+Without creation timestamps, users couldn't determine when notes were added, reducing usefulness for time-based queries. Solution: Automatically append `**Created:** YYYY-MM-DD` to all new entries and `**Update (YYYY-MM-DD):**` to appends.
+
+### 2025-11-16: Category Inference Enables Better Migration
+Legacy notes without categories are harder to scan and organize. Solution: Keyword-based category inference during migration (Work, Learning, Health, etc.) transforms simple headings into categorized entries automatically.
+
+### 2025-11-16: Stick to Official YAML Frontmatter Specification
+When adding skills, use only documented frontmatter fields (`name`, `description`, `allowed-tools`, `metadata.*`). Custom fields may confuse users or break compatibility with future Claude versions. Document any optional fields clearly with their purpose.
+
 ## Git Workflow Notes
 
 This repository follows standard GitHub workflow:
