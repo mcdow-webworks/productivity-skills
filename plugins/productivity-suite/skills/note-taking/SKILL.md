@@ -136,19 +136,7 @@ This is your 4th update to this idea - great momentum!
 - "Update X with..."
 - "Append to X..."
 
-### 4. Connecting Ideas
-
-Claude helps surface forgotten connections:
-
-```
-You: "Connect the llms.txt idea with Reverb documentation improvements"
-
-Claude: These definitely connect - llms.txt generation would make Reverb docs more AI-discoverable.
-
-I also found your October note about making docs AI-friendly. This could be part of that broader initiative. Should I note that connection?
-```
-
-### 5. Pattern Recognition
+### 4. Pattern Recognition
 
 Ask Claude to analyze your thinking:
 
@@ -175,7 +163,7 @@ Claude: Looking across 47 entries in November, I see three main themes:
 Documentation automation is your hottest topic - you've touched on it weekly. Might warrant dedicated focus time?
 ```
 
-### 6. Daily Capture
+### 5. Daily Capture
 
 End-of-day knowledge capture:
 
@@ -199,8 +187,7 @@ Should we capture:
 
 1. **Automatic Indexing**: Claude maintains a search index (`.index.json`) of all your entries
 2. **Smart Search**: Searches headings first, then content, weighted by recency
-3. **Connection Graph**: Tracks relationships between ideas (`.connections.json`)
-4. **Context Preservation**: Updates maintain history with timestamps
+3. **Context Preservation**: Updates maintain history with timestamps
 
 ### File Structure
 
@@ -211,7 +198,6 @@ Should we capture:
 │   ├── 02-February.md
 │   └── 11-November.md          # Current month
 ├── .index.json                 # Auto-generated search index
-├── .connections.json           # Relationship graph
 └── .gitignore                  # Ignore index files
 ```
 
@@ -320,14 +306,11 @@ Don't stress about organization. Claude can find it later.
 ### 3. Update, Don't Delete
 Add updates with timestamps. Shows evolution of thinking.
 
-### 4. Ask for Connections
-"How does X relate to Y?" - Let Claude surface forgotten links.
-
-### 5. Review Patterns
+### 4. Review Patterns
 Weekly: "What did I focus on this week?"
 Monthly: "What themes emerged?"
 
-### 6. Be Conversational
+### 5. Be Conversational
 Claude understands natural language. Don't worry about exact syntax.
 
 ## Migrating Existing Notes

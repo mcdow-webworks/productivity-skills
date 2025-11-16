@@ -46,7 +46,6 @@ my-notes/
 
 # Generated indexes (should be regenerated)
 .index.json
-.connections.json
 
 # Compressed files (gzip archives)
 *.gz

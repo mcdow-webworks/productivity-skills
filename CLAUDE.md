@@ -200,7 +200,6 @@ export NOTES_DIR="$HOME/my-custom-notes"
 - Handles encoding with UTF-8 explicitly
 - Gracefully handles missing files/directories
 - Maintains `.index.json` for fast searching
-- Supports `.connections.json` for relationship tracking (future use)
 - **OneDrive Detection**: Automatically uses `~/OneDrive/Documents/notes` if OneDrive folder exists, ensuring consistency between Claude Desktop and Claude Code on Windows
 
 **Entry Extraction**:

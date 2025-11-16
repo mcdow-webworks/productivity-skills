@@ -30,7 +30,6 @@ def get_default_notes_dir() -> Path:
 DEFAULT_NOTES_DIR = get_default_notes_dir()
 NOTES_DIR = Path(os.environ.get('NOTES_DIR', DEFAULT_NOTES_DIR))
 INDEX_FILE = NOTES_DIR / '.index.json'
-CONNECTIONS_FILE = NOTES_DIR / '.connections.json'
 CONFIG_FILE = NOTES_DIR / '.config.json'
 
 def get_current_month_file() -> Path:
