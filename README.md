@@ -87,11 +87,11 @@ Transform markdown notes into an AI-navigable knowledge system. Claude becomes y
 **Example Usage:**
 ```
 You: "Note that the German partner loved the llms.txt idea"
-Claude: Added to November notes! I also found your earlier llms.txt 
-        entry from Nov 15 - these are related. Want me to link them?
+Claude: Added to November notes! I also found your earlier llms.txt
+        entry from Nov 15.
 
 You: "What's the status of llms.txt?"
-Claude: You have 3 entries showing progression from concept to 
+Claude: You have 3 entries showing progression from concept to
         validated to implementation. Ready to move forward?
 ```
 
