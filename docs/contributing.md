@@ -31,9 +31,9 @@ Thank you for your interest in contributing! This guide will help you add new sk
 
 ```bash
 # Fork the repo on GitHub, then:
-git clone https://github.com/mcdow-webworks/productivity-skills.git
+git clone https://github.com/YOUR-USERNAME/productivity-skills.git
 cd productivity-skills
-git remote add upstream https://github.com/ORIGINAL-OWNER/productivity-skills.git
+git remote add upstream https://github.com/mcdow-webworks/productivity-skills.git
 ```
 
 ### 2. Create a Branch
