@@ -437,7 +437,7 @@ Your notes aren't just for you anymore - they're for you and your AI partner.
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/mcdow-webworks/productivity-skills/issues)
-- **Examples**: See [examples/note-taking/](../../examples/)
+- **Examples**: See [examples/](examples/)
 - **Discussions**: [GitHub Discussions](https://github.com/mcdow-webworks/productivity-skills/discussions)
 
 ---

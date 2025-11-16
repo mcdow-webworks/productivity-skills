@@ -224,16 +224,15 @@ productivity-skills/
 │               ├── SKILL.md     # Skill definition
 │               ├── hooks/       # Utility scripts
 │               │   └── notes_manager.py
-│               └── templates/   # Note templates
-│                   └── monthly-template.md
+│               ├── templates/   # Note templates
+│               │   └── monthly-template.md
+│               └── examples/    # Example notes
+│                   └── sample-notes.md
 ├── docs/                        # Documentation
 │   ├── installation.md          # Installation guide
 │   ├── development.md           # Development workflow
 │   ├── contributing.md          # Contributing guidelines
 │   └── faq.md                   # Frequently asked questions
-├── examples/                    # Examples
-│   └── note-taking/
-│       └── sample-notes.md      # Sample note file
 ├── README.md                    # This file
 ├── CLAUDE.md                    # Repository context for Claude
 ├── LICENSE                      # MIT License

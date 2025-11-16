@@ -23,10 +23,11 @@ productivity-skills/
 │               ├── SKILL.md      # Skill definition with YAML frontmatter
 │               ├── hooks/
 │               │   └── notes_manager.py  # Python utility for note operations
-│               └── templates/
-│                   └── monthly-template.md
+│               ├── templates/
+│               │   └── monthly-template.md
+│               └── examples/
+│                   └── sample-notes.md   # Example note file
 ├── docs/                         # User documentation
-├── examples/                     # Configuration examples
 └── README.md                     # User-facing documentation
 ```
 
