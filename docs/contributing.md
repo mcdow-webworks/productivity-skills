@@ -82,6 +82,11 @@ productivity-skills/
 Your `SKILL.md` is what Claude reads to understand your skill. Follow this structure:
 
 ```markdown
+---
+name: skill-name
+description: Brief description of what the skill does and when to use it
+---
+
 # Skill Name - Brief Description
 
 One-paragraph overview of what this skill does.
@@ -117,15 +122,21 @@ Common issues and solutions.
 
 **Key principles for SKILL.md:**
 
-1. **Clear and concise** - Claude reads this, so be direct
-2. **Example-driven** - Show don't tell
-3. **Conversational triggers** - Explain what phrases activate features
-4. **Error handling** - Document edge cases
-5. **Integration patterns** - How it works with other skills
+1. **YAML frontmatter required** - Must include `name` and `description` fields
+2. **Clear and concise** - Claude reads this, so be direct
+3. **Example-driven** - Show don't tell
+4. **Conversational triggers** - Explain what phrases activate features
+5. **Error handling** - Document edge cases
+6. **Integration patterns** - How it works with other skills
 
 ### Example SKILL.md Snippet
 
 ```markdown
+---
+name: task-management
+description: Track tasks conversationally with automatic prioritization and context awareness. Use when managing todos, tracking work items, or organizing tasks.
+---
+
 # Task Management - AI-Assisted Todo Tracking
 
 Track tasks conversationally with automatic prioritization and context awareness.
