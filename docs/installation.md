@@ -20,34 +20,17 @@ Restart Claude Code to load the plugin.
 3. Enable "Skills" toggle
 4. Click "Upload skill" → Select ZIP file
 
-## Setup
-
-### Note-Taking Skill
-
-Create your notes directory:
-
-```bash
-# Default location (works on all platforms)
-mkdir -p ~/Documents/notes/$(date +%Y)
-
-# Windows with OneDrive
-mkdir -p ~/OneDrive/Documents/notes/$(date +%Y)
-```
-
-**Note:** The skill automatically detects OneDrive on Windows and uses `~/OneDrive/Documents/notes` if available.
+**Note:** No additional setup required! The skill automatically creates the notes directory (`~/Documents/notes` or `~/OneDrive/Documents/notes` on Windows with OneDrive) when you add your first note.
 
 ### Custom Notes Location (Optional)
 
+To use a custom location, set the `NOTES_DIR` environment variable:
+
 ```bash
-# Set environment variable
+# macOS/Linux
 export NOTES_DIR="$HOME/my-custom-notes"
 
-# Create directory
-mkdir -p "$NOTES_DIR/$(date +%Y)"
-```
-
-On Windows, set via System Environment Variables:
-```
+# Windows (System Environment Variables)
 NOTES_DIR=C:\Users\username\my-custom-notes
 ```
 
