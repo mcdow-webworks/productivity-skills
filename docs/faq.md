@@ -140,7 +140,7 @@ No! As long as you keep the basic heading format (`# Category - Description`), e
 Highly recommended! Your notes directory is perfect for git:
 
 ```bash
-cd ~/notes
+cd ~/Documents/notes
 git init
 git add .
 git commit -m "Initial notes"
@@ -157,7 +157,7 @@ The search is designed to handle large collections. The index makes searches fas
 Yes! If your existing notes are in markdown:
 
 ```bash
-cp -r ~/path/to/old-notes/*.md ~/notes/2025/
+cp -r ~/path/to/old-notes/*.md ~/Documents/notes/2025/
 ```
 
 Then ask Claude to reindex. If they're not in markdown, you'll need to export/convert first.
@@ -207,8 +207,8 @@ This means Claude Code isn't installed or not in PATH. See [Claude Code installa
 ### "Notes aren't saving"
 
 **Check:**
-1. Does notes directory exist? `mkdir -p ~/notes/$(date +%Y)`
-2. Do you have write permissions? `touch ~/notes/test.txt`
+1. Does notes directory exist? `mkdir -p ~/Documents/notes/$(date +%Y)`
+2. Do you have write permissions? `touch ~/Documents/notes/test.txt`
 3. Try reindexing: `"Reindex my notes"`
 
 ### "Search not finding my notes"
@@ -216,7 +216,7 @@ This means Claude Code isn't installed or not in PATH. See [Claude Code installa
 **Solutions:**
 1. Rebuild index: `"Reindex all my notes"`
 2. Check file format - should be `# Heading` style
-3. Verify files are in `~/notes/YYYY/*.md`
+3. Verify files are in `~/Documents/notes/YYYY/*.md`
 
 ### "Python errors"
 
@@ -294,12 +294,12 @@ Ask Claude to convert:
 Since they're markdown files:
 ```bash
 # Share via git
-cd ~/notes
+cd ~/Documents/notes
 git remote add origin https://github.com/you/notes.git
 git push
 
 # Or export specific files
-cp ~/notes/2025/11-November.md ~/shared/
+cp ~/Documents/notes/2025/11-November.md ~/shared/
 ```
 
 ## Feature Requests

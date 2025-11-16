@@ -4,56 +4,53 @@ Complete installation instructions for Productivity Skills on Claude Code and Cl
 
 ## Quick Install (Recommended)
 
-### 1. Clone the Repository
+### Option 1: Plugin Marketplace (Claude Code)
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/productivity-skills.git ~/productivity-skills
+# In Claude Code, run:
+/plugin marketplace add mcdow-webworks/productivity-skills
+/plugin install productivity-suite@productivity-skills
 ```
 
-### 2. Configure Claude
+### Option 2: ZIP Upload (Claude Desktop/Web)
 
-Choose your platform:
+1. Download `note-taking-skill.zip` from the [latest release](https://github.com/mcdow-webworks/productivity-skills)
+2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities) or Settings > Capabilities
+3. Enable "Skills" toggle
+4. Click "Upload skill" and select the ZIP file
+5. Skill activates immediately
 
-#### Claude Code
+### Option 3: Manual Installation (Development)
 
-Add to `~/.claude/settings.json`:
+#### Clone the Repository
 
-```json
-{
-  "projectDefaults": {
-    "skillDirectories": ["~/productivity-skills"]
-  }
-}
+```bash
+git clone https://github.com/mcdow-webworks/productivity-skills.git ~/productivity-skills
+cd ~/productivity-skills
 ```
 
-#### Claude Desktop
+#### For Claude Code
 
-1. Open Claude Desktop
-2. Go to **Settings** (or **Preferences** on macOS)
-3. Navigate to **Advanced** tab
-4. Add skill directory:
-
-```json
-{
-  "skillDirectories": ["~/productivity-skills"]
-}
+```bash
+# Copy plugin to Claude Code directory
+mkdir -p "$APPDATA/Claude/plugins"
+cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 ```
 
-Or edit the config file directly:
-- **macOS**: `~/Library/Application Support/Claude/settings.json`
-- **Windows**: `%APPDATA%\Claude\settings.json`
-- **Linux**: `~/.config/Claude/settings.json`
+#### For Claude Desktop
+
+Use the ZIP upload method (Option 2) - Claude Desktop doesn't support directory-based installation.
 
 ### 3. Set Up Individual Skills
 
 #### Note-Taking
 
 ```bash
-# Create notes directory
-mkdir -p ~/notes/$(date +%Y)
+# Create notes directory (default location)
+mkdir -p ~/Documents/notes/$(date +%Y)
 
 # Optional: Custom location
-export NOTES_DIR="$HOME/Documents/notes"
+export NOTES_DIR="$HOME/my-custom-notes"
 mkdir -p "$NOTES_DIR/$(date +%Y)"
 ```
 
@@ -76,28 +73,41 @@ Test it:
 
 If Claude responds by adding the note, you're all set! 🎉
 
-## Detailed Installation
+## Setup After Installation
+
+After installing via marketplace or ZIP upload, create your notes directory:
+
+```bash
+# Create notes directory (Windows/macOS/Linux)
+mkdir -p ~/Documents/notes/$(date +%Y)
+
+# Verify it was created
+ls -la ~/Documents/notes/
+```
+
+Test the skill:
+
+```
+"Note that productivity skills are now installed and working!"
+```
+
+If Claude creates a note, you're all set! 🎉
+
+## Advanced: Development Installation
+
+For developers who want to modify the skills or contribute:
 
 ### Prerequisites
 
-Before installing, ensure you have:
-
 - ✅ **Claude Code 2.0+** or **Claude Desktop**
-- ✅ **Bash** shell (macOS/Linux/WSL)
-- ✅ **Python 3.7+** (for utility scripts)
-- ✅ **Git** (for cloning the repository)
+- ✅ **Python 3.7+** (for notes_manager.py)
+- ✅ **Git** (for cloning)
 
 Check your versions:
 
 ```bash
-# Check Python
 python3 --version
-
-# Check Git  
 git --version
-
-# Check Bash
-bash --version
 ```
 
 ### Step-by-Step Setup
@@ -222,30 +232,18 @@ Create your notes directory:
 
 ```bash
 # Default location
-mkdir -p ~/notes/$(date +%Y)
+mkdir -p ~/Documents/notes/$(date +%Y)
 
 # Add to shell config for custom location (optional)
-echo 'export NOTES_DIR="$HOME/Documents/notes"' >> ~/.bashrc
+echo 'export NOTES_DIR="$HOME/my-custom-notes"' >> ~/.bashrc
 source ~/.bashrc
 mkdir -p "$NOTES_DIR/$(date +%Y)"
 ```
 
-Create initial structure:
+Make utility script executable (if using development installation):
 
 ```bash
-cd ~/notes
-cat > 2025/$(date +%m-%B).md << 'EOF'
-# Notes - $(date +%B %Y)
-
-<!-- Your notes will appear below -->
-
-EOF
-```
-
-Make utility script executable:
-
-```bash
-chmod +x ~/productivity-skills/note-taking/hooks/notes_manager.py
+chmod +x ~/productivity-skills/plugins/productivity-suite/skills/note-taking/hooks/notes_manager.py
 ```
 
 #### 4. Verify Installation
@@ -452,7 +450,7 @@ To remove productivity skills:
    ```
 
 3. **Keep your notes** (they're separate):
-   Your notes in `~/notes/` are independent and remain intact.
+   Your notes in `~/Documents/notes/` are independent and remain intact.
 
 ## Troubleshooting
 
@@ -510,14 +508,14 @@ To remove productivity skills:
 
 1. **Verify notes directory exists**:
    ```bash
-   mkdir -p ~/notes/$(date +%Y)
+   mkdir -p ~/Documents/notes/$(date +%Y)
    ```
 
 2. **Check permissions**:
    ```bash
-   ls -la ~/notes/
-   touch ~/notes/test.txt  # Should work
-   rm ~/notes/test.txt
+   ls -la ~/Documents/notes/
+   touch ~/Documents/notes/test.txt  # Should work
+   rm ~/Documents/notes/test.txt
    ```
 
 3. **Try manual index rebuild**:
