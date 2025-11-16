@@ -15,7 +15,9 @@ import re
 from typing import List, Dict, Optional
 
 # Configuration - can be overridden by environment variable
-NOTES_DIR = Path(os.environ.get('NOTES_DIR', Path.home() / 'notes'))
+# Default: ~/Documents/notes on all platforms
+DEFAULT_NOTES_DIR = Path.home() / 'Documents' / 'notes'
+NOTES_DIR = Path(os.environ.get('NOTES_DIR', DEFAULT_NOTES_DIR))
 INDEX_FILE = NOTES_DIR / '.index.json'
 CONNECTIONS_FILE = NOTES_DIR / '.connections.json'
 CONFIG_FILE = NOTES_DIR / '.config.json'
@@ -282,6 +284,20 @@ def update_index() -> Dict:
         'index_path': str(INDEX_FILE)
     }
 
+def get_info() -> Dict:
+    """Get information about notes directory and configuration"""
+    return {
+        'status': 'success',
+        'notes_dir': str(NOTES_DIR.resolve()),
+        'notes_dir_exists': NOTES_DIR.exists(),
+        'index_file': str(INDEX_FILE),
+        'index_exists': INDEX_FILE.exists(),
+        'home_dir': str(Path.home()),
+        'current_month_file': str(get_current_month_file()),
+        'platform': sys.platform,
+        'python_version': sys.version
+    }
+
 def get_stats() -> Dict:
     """Get statistics about the notes system"""
     try:
@@ -357,6 +373,8 @@ def main():
         result = update_index()
     elif command == 'stats':
         result = get_stats()
+    elif command == 'info':
+        result = get_info()
     else:
         result = {
             'status': 'help',
@@ -365,7 +383,8 @@ def main():
                 'search': 'Search for notes',
                 'append': 'Append to existing note',
                 'reindex': 'Rebuild search index',
-                'stats': 'Get notes statistics'
+                'stats': 'Get notes statistics',
+                'info': 'Get notes directory info and paths'
             },
             'usage': 'echo \'{"command":"search","query":"test"}\' | python3 notes_manager.py'
         }

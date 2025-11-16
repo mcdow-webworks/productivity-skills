@@ -65,7 +65,7 @@ Then:
 
 ```bash
 # Create notes directory for note-taking skill
-mkdir -p ~/notes/$(date +%Y)
+mkdir -p ~/Documents/notes/$(date +%Y)
 ```
 
 ### Start Using It!
@@ -299,13 +299,13 @@ cat ~/.claude/settings.json | grep skillDirectories
 
 ```bash
 # Check notes directory
-ls -la ~/notes/
+ls -la ~/Documents/notes/
 
 # Verify structure
-ls ~/notes/$(date +%Y)/
+ls ~/Documents/notes/$(date +%Y)/
 
 # Rebuild index
-cd ~/notes
+cd ~/Documents/notes
 claude
 # Then: "Reindex my notes"
 ```

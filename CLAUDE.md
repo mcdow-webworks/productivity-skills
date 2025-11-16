@@ -35,7 +35,7 @@ productivity-skills/
 ### Note-Taking Skill Architecture
 
 **Data Storage:**
-- Notes stored in `~/notes/YYYY/MM-Month.md` by default
+- Notes stored in `~/Documents/notes/YYYY/MM-Month.md` by default
 - Can be customized via `NOTES_DIR` environment variable
 - All files are plain markdown for portability
 
@@ -163,9 +163,12 @@ python create-skill-zip.py
 - templates/ folder (resources)
 - No nested directories before SKILL.md
 
-**Custom notes directory**:
+**Custom notes directory** (optional - default is ~/Documents/notes):
 ```bash
 export NOTES_DIR="$HOME/my-custom-notes"
+
+# Or on Windows (System Environment Variables):
+# NOTES_DIR=C:\Users\username\my-custom-notes
 ```
 
 **Marketplace Configuration:**

@@ -100,7 +100,7 @@ Once installed, test the note-taking skill:
 ### Setup
 ```bash
 # Create notes directory
-mkdir -p ~/notes/2025
+mkdir -p ~/Documents/notes/2025
 ```
 
 ### Basic Tests
@@ -109,7 +109,7 @@ mkdir -p ~/notes/2025
    ```
    "Note that I'm testing the marketplace plugin installation"
    ```
-   - Should create/append to `~/notes/2025/11-November.md`
+   - Should create/append to `~/Documents/notes/2025/11-November.md`
    - Entry should be properly formatted
 
 2. **Search Notes:**
@@ -179,7 +179,7 @@ mkdir -p ~/notes/2025
 **Check:**
 1. Notes directory exists:
    ```bash
-   ls -la ~/notes/2025/
+   ls -la ~/Documents/notes/2025/
    ```
 
 2. Python script is executable:

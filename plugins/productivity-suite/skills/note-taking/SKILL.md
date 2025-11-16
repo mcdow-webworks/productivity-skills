@@ -13,13 +13,13 @@ Transform your markdown notes into an AI-navigable knowledge system. Claude beco
 
 1. **Create your notes directory**
    ```bash
-   mkdir -p ~/notes/$(date +%Y)
+   mkdir -p ~/Documents/notes/$(date +%Y)
    ```
 
 2. **Configure paths** (optional)
-   By default, notes are stored in `~/notes/`. To customize:
+   By default, notes are stored in `~/Documents/notes/`. To customize:
    ```bash
-   export NOTES_DIR="$HOME/my-notes"
+   export NOTES_DIR="$HOME/my-custom-notes"
    ```
 
 3. **Start using it**
@@ -33,7 +33,7 @@ That's it! Claude now manages your notes across all sessions.
 ## Your Note Format
 
 ### Monthly Files
-- Files are organized by year and month: `~/notes/2025/11-November.md`
+- Files are organized by year and month: `~/Documents/notes/2025/11-November.md`
 - Current month is automatically used unless specified
 - Plain markdown - portable, searchable, version-controllable
 
@@ -201,7 +201,7 @@ Should we capture:
 ### File Structure
 
 ```
-~/notes/
+~/Documents/notes/
 ├── 2025/
 │   ├── 01-January.md
 │   ├── 02-February.md
@@ -332,10 +332,10 @@ If you already have markdown notes:
 
 ```bash
 # Move existing files to new structure
-cp ~/old-notes/*.md ~/notes/2025/
+cp ~/old-notes/*.md ~/Documents/notes/2025/
 
 # Let Claude index them
-cd ~/notes
+cd ~/Documents/notes
 claude
 ```
 
@@ -372,7 +372,7 @@ Add to `~/.claude/settings.json`:
 
 ### Custom Categories
 
-Define in `~/notes/.config.json`:
+Define in `~/Documents/notes/.config.json`:
 
 ```json
 {
@@ -395,7 +395,7 @@ Define in `~/notes/.config.json`:
 
 Check your directory structure:
 ```bash
-ls -la ~/notes/
+ls -la ~/Documents/notes/
 # Should see year directories and .index.json
 ```
 
@@ -408,7 +408,7 @@ In Claude: "Reindex all my notes"
 
 Verify file permissions:
 ```bash
-ls -la ~/notes/2025/
+ls -la ~/Documents/notes/2025/
 # Files should be writable by your user
 ```
 
@@ -416,7 +416,7 @@ ls -la ~/notes/2025/
 
 Rebuild the index:
 ```bash
-rm ~/notes/.index.json
+rm ~/Documents/notes/.index.json
 # Then in Claude: "Reindex my notes"
 ```
 
@@ -429,7 +429,7 @@ rm ~/notes/.index.json
 
 ## Tips from Users
 
-> "I keep one terminal always in ~/notes with Claude running. Quick access for capture, but I can still search from any other session." - *Tony W.*
+> "I keep one terminal always in ~/Documents/notes with Claude running. Quick access for capture, but I can still search from any other session." - *Tony W.*
 
 > "I ask Claude 'what should I note from today?' at the end of each workday. Helps ensure I don't lose insights." - *Developer*
 
