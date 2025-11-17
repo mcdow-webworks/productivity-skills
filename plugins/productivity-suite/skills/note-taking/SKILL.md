@@ -1,6 +1,6 @@
 ---
 name: note-taking
-description: Auto-captures when user says "Note that", "Remember that", or "Add a note about". Searches notes when user asks "What did I note about", "What have I learned about", "What do I know about", or "Show me my notes on". Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
+description: ALWAYS use this skill when user says "Note that", "Remember that", "Add a note about", or asks about their knowledge/learning with phrases like "What did I note about", "What have I learned about", "What do I know about", "Show me my notes on", or "Find my notes on". This searches the user's persistent note-taking system (their second brain), NOT conversation history. Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in their thinking.
 ---
 
 # Note-Taking - AI-Navigable Second Brain
