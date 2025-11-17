@@ -1,6 +1,6 @@
 ---
 name: note-taking
-description: Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
+description: Auto-captures when user says "Note that", "Remember that", or "Add a note about". Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
 ---
 
 # Note-Taking - AI-Navigable Second Brain
