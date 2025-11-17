@@ -1,6 +1,6 @@
 ---
 name: note-taking
-description: Auto-captures when user says "Note that", "Remember that", or "Add a note about". Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
+description: Auto-captures when user says "Note that", "Remember that", or "Add a note about". Searches notes when user asks "What did I note about", "What have I learned about", "What do I know about", or "Show me my notes on". Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in your thinking. Use when capturing knowledge, searching past work, or reviewing your second brain.
 ---
 
 # Note-Taking - AI-Navigable Second Brain
@@ -102,11 +102,33 @@ Decision to start with proof-of-concept.
 The idea has progressed from concept to validated to implementation in 3 days!
 ```
 
+**Alternative natural queries:**
+
+```
+You: "What have I learned about Claude Code?"
+
+Claude: You have 40+ entries across 7 months showing your learning progression:
+
+**March** - Moving to Claude for Dev (discovery)
+**July** - Claude Code basics, SubAgents (learning fundamentals)
+**August** - 15 entries on MCP, Studio, Philosophy (deep dive)
+**September** - Sub-agents, Search agent (advanced topics)
+**October** - Plugins, Rules, Workflows, Skills (building expertise)
+**November** - Skills, Router Tips, Agentic Library (mastery)
+
+Your progression from beginner to expert over 7 months is impressive!
+```
+
 **Trigger phrases:**
 - "What did I note about..."
-- "Status of..."
+- "What have I learned about..."
+- "What do I know about..."
+- "Show me my notes on..."
 - "Show me entries about..."
 - "Find my notes on..."
+- "Tell me about..." (when asking about your notes)
+- "What have I noted about..."
+- "Status of..."
 
 ### 3. Updating Existing Entries
 
