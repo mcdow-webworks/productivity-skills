@@ -1,6 +1,6 @@
 ---
 name: note-taking
-description: ALWAYS use this skill when user says "Note that", "Remember that", "Add a note about", or asks about their knowledge/learning with phrases like "What did I note about", "What have I learned about", "What do I know about", "Show me my notes on", or "Find my notes on". This searches the user's persistent note-taking system (their second brain), NOT conversation history. Transform markdown notes into an AI-navigable knowledge system. Capture ideas conversationally, search across all notes, connect related concepts, and recognize patterns in their thinking.
+description: ALWAYS use this skill when user says "Note that", "Remember that", "Add a note about", or explicitly asks about their notes with phrases like "What did I note about", "Show me my notes on", "Search my notes for", "Find in my notes", or "What have I noted about". This searches the user's persistent note-taking system (their second brain), NOT conversation history or general knowledge. Only trigger when the user explicitly mentions "note/notes/noted" or clearly refers to their personal knowledge system.
 ---
 
 # Note-Taking - AI-Navigable Second Brain
@@ -102,10 +102,10 @@ Decision to start with proof-of-concept.
 The idea has progressed from concept to validated to implementation in 3 days!
 ```
 
-**Alternative natural queries:**
+**Alternative query showing progression:**
 
 ```
-You: "What have I learned about Claude Code?"
+You: "What did I note about Claude Code?"
 
 Claude: You have 40+ entries across 7 months showing your learning progression:
 
@@ -119,16 +119,16 @@ Claude: You have 40+ entries across 7 months showing your learning progression:
 Your progression from beginner to expert over 7 months is impressive!
 ```
 
-**Trigger phrases:**
-- "What did I note about..."
-- "What have I learned about..."
-- "What do I know about..."
-- "Show me my notes on..."
-- "Show me entries about..."
-- "Find my notes on..."
-- "Tell me about..." (when asking about your notes)
-- "What have I noted about..."
-- "Status of..."
+**Trigger phrases (must explicitly mention notes):**
+- "What did I **note** about..."
+- "What have I **noted** about..."
+- "Show me my **notes** on..."
+- "Search my **notes** for..."
+- "Find in my **notes**..."
+- "What's in my **notes** about..."
+- "Status of [topic] in my **notes**"
+
+**Note:** Generic phrases like "What have I learned about..." or "What do I know about..." won't reliably trigger because they're ambiguous. Always use "note/notes/noted" in your query.
 
 ### 3. Updating Existing Entries
 
