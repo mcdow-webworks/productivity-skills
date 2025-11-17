@@ -18,6 +18,9 @@ Instead of just asking Claude questions, these skills make Claude an **active pa
 
 All while keeping your data local in simple markdown files.
 
+![Claude Desktop showing automatic note connections](docs/images/note-taking-demo.png)
+*Claude automatically finds and connects related notes across sessions, showing the progression from idea to implementation*
+
 ## ✨ Quick Start (2 Minutes)
 
 ### Installation
