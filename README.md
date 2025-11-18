@@ -82,7 +82,7 @@ Transform markdown notes into an AI-navigable knowledge system. Claude becomes y
 - Pattern recognition and insight generation
 - Maintains simple markdown format
 
-[Full Note-Taking Documentation →](plugins/productivity-suite/skills/note-taking/SKILL.md)
+[Full Note-Taking Documentation →](plugins/productivity-suite/skills/note-taking/docs/USER_GUIDE.md)
 
 **Example Usage:**
 ```
