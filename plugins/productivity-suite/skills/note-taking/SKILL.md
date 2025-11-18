@@ -9,7 +9,7 @@ allowed-tools: Bash
 ## CRITICAL RULES
 
 **YOU MUST ALWAYS:**
-- Use `${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py` for ALL note operations
+- Use `scripts/notes_manager.py` for ALL note operations
 - Pass JSON commands via stdin to the script
 - Parse JSON responses from the script and present them conversationally
 
@@ -21,7 +21,7 @@ allowed-tools: Bash
 ## Script Location
 
 ```bash
-${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+scripts/notes_manager.py
 ```
 
 The script automatically detects the notes directory (OneDrive on Windows, Documents otherwise, or `$NOTES_DIR` if set).
@@ -34,7 +34,7 @@ The script automatically detects the notes directory (OneDrive on Windows, Docum
 
 **Command:**
 ```bash
-echo '{"command":"add","heading":"Category - Brief description","content":"Full note content"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"add","heading":"Category - Brief description","content":"Full note content"}' | python3 scripts/notes_manager.py
 ```
 
 **Parameters:**
@@ -48,7 +48,7 @@ echo '{"command":"add","heading":"Category - Brief description","content":"Full 
 
 **Example:**
 ```bash
-echo '{"command":"add","heading":"Work - Implemented feature X","content":"Successfully completed with tests and documentation"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"add","heading":"Work - Implemented feature X","content":"Successfully completed with tests and documentation"}' | python3 scripts/notes_manager.py
 ```
 
 **Category Inference:**
@@ -66,7 +66,7 @@ Use keywords to infer category:
 
 **Command:**
 ```bash
-echo '{"command":"search","query":"search terms"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"search","query":"search terms"}' | python3 scripts/notes_manager.py
 ```
 
 **Parameters:**
@@ -91,7 +91,7 @@ echo '{"command":"search","query":"search terms"}' | python3 ${CLAUDE_SKILL_ROOT
 
 **Example:**
 ```bash
-echo '{"command":"search","query":"Claude Code"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"search","query":"Claude Code"}' | python3 scripts/notes_manager.py
 ```
 
 **Presenting Results:**
@@ -105,7 +105,7 @@ echo '{"command":"search","query":"Claude Code"}' | python3 ${CLAUDE_SKILL_ROOT}
 
 **Command:**
 ```bash
-echo '{"command":"append","search_term":"unique term to find note","content":"Additional content"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"append","search_term":"unique term to find note","content":"Additional content"}' | python3 scripts/notes_manager.py
 ```
 
 **Parameters:**
@@ -130,7 +130,7 @@ echo '{"command":"append","search_term":"unique term to find note","content":"Ad
 
 **Example:**
 ```bash
-echo '{"command":"append","search_term":"feature X","content":"Deployed to production successfully"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"append","search_term":"feature X","content":"Deployed to production successfully"}' | python3 scripts/notes_manager.py
 ```
 
 ### 4. Reindex
@@ -139,7 +139,7 @@ echo '{"command":"append","search_term":"feature X","content":"Deployed to produ
 
 **Command:**
 ```bash
-echo '{"command":"reindex"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"reindex"}' | python3 scripts/notes_manager.py
 ```
 
 **Response:**
@@ -153,7 +153,7 @@ echo '{"command":"reindex"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manage
 
 **Command:**
 ```bash
-echo '{"command":"stats"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"stats"}' | python3 scripts/notes_manager.py
 ```
 
 **Response:**
@@ -172,7 +172,7 @@ echo '{"command":"stats"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.
 
 **Command:**
 ```bash
-echo '{"command":"migrate","source_dir":"/path/to/old-notes"}' | python3 ${CLAUDE_SKILL_ROOT}/scripts/notes_manager.py
+echo '{"command":"migrate","source_dir":"/path/to/old-notes"}' | python3 scripts/notes_manager.py
 ```
 
 **Parameters:**
