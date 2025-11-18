@@ -28,7 +28,7 @@ def get_default_notes_dir() -> Path:
     return local_docs
 
 DEFAULT_NOTES_DIR = get_default_notes_dir()
-NOTES_DIR = Path(os.environ.get('NOTES_DIR', DEFAULT_NOTES_DIR))
+NOTES_DIR = Path(os.environ.get('NOTES_DIR', DEFAULT_NOTES_DIR)).expanduser().resolve()
 INDEX_FILE = NOTES_DIR / '.index.json'
 CONFIG_FILE = NOTES_DIR / '.config.json'
 
@@ -314,10 +314,15 @@ def update_index() -> Dict:
 
 def get_info() -> Dict:
     """Get information about notes directory and configuration"""
+    onedrive_path = Path.home() / 'OneDrive' / 'Documents'
+
     return {
         'status': 'success',
         'notes_dir': str(NOTES_DIR.resolve()),
         'notes_dir_exists': NOTES_DIR.exists(),
+        'notes_dir_is_writable': os.access(NOTES_DIR, os.W_OK) if NOTES_DIR.exists() else False,
+        'onedrive_detected': onedrive_path.exists(),
+        'using_onedrive': str(NOTES_DIR).startswith(str(onedrive_path)),
         'index_file': str(INDEX_FILE),
         'index_exists': INDEX_FILE.exists(),
         'home_dir': str(Path.home()),
@@ -365,6 +370,171 @@ def get_stats() -> Dict:
     except Exception as e:
         return {'status': 'error', 'message': str(e)}
 
+def clean_index() -> Dict:
+    """Safely remove and rebuild search index"""
+    try:
+        if INDEX_FILE.exists():
+            INDEX_FILE.unlink()
+            message = 'Removed existing index. Rebuilding...'
+        else:
+            message = 'No existing index. Building fresh index...'
+
+        reindex_result = update_index()
+
+        return {
+            'status': 'success',
+            'message': message,
+            'reindex_result': reindex_result
+        }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': f'Failed to clean index: {str(e)}'
+        }
+
+def validate() -> Dict:
+    """Check all note files for issues"""
+    issues = []
+    files_checked = 0
+
+    try:
+        for year_dir in sorted(NOTES_DIR.glob('[0-9]*')):
+            if not year_dir.is_dir():
+                continue
+
+            for note_file in sorted(year_dir.glob('*.md')):
+                files_checked += 1
+
+                try:
+                    content = note_file.read_text(encoding='utf-8')
+
+                    # Check for empty files
+                    if not content.strip():
+                        issues.append({
+                            'file': f"{year_dir.name}/{note_file.name}",
+                            'issue': 'Empty file',
+                            'severity': 'warning'
+                        })
+
+                    # Check for proper heading format
+                    elif not content.startswith('#'):
+                        issues.append({
+                            'file': f"{year_dir.name}/{note_file.name}",
+                            'issue': 'No top-level heading',
+                            'severity': 'info'
+                        })
+
+                except UnicodeDecodeError:
+                    issues.append({
+                        'file': f"{year_dir.name}/{note_file.name}",
+                        'issue': 'Not valid UTF-8',
+                        'severity': 'error'
+                    })
+                except Exception as e:
+                    issues.append({
+                        'file': f"{year_dir.name}/{note_file.name}",
+                        'issue': str(e),
+                        'severity': 'error'
+                    })
+
+        return {
+            'status': 'success',
+            'files_checked': files_checked,
+            'issues_found': len(issues),
+            'issues': issues
+        }
+
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': f'Validation failed: {str(e)}'
+        }
+
+def migrate(source_dir: str) -> Dict:
+    """Import existing markdown files with validation and indexing"""
+    try:
+        source = Path(source_dir).expanduser().resolve()
+
+        if not source.exists():
+            return {
+                'status': 'error',
+                'message': f'Source directory not found: {source}'
+            }
+
+        if not source.is_dir():
+            return {
+                'status': 'error',
+                'message': f'Source path is not a directory: {source}'
+            }
+
+        imported = []
+        skipped = []
+        errors = []
+
+        for md_file in source.glob('**/*.md'):
+            try:
+                # Skip hidden files and index
+                if md_file.name.startswith('.') or md_file.name == '.index.json':
+                    skipped.append(str(md_file.name))
+                    continue
+
+                # Read with UTF-8
+                content = md_file.read_text(encoding='utf-8')
+
+                if not content.strip():
+                    skipped.append(f"{md_file.name} (empty)")
+                    continue
+
+                # Use file modification time to determine target year/month
+                mtime = datetime.fromtimestamp(md_file.stat().st_mtime)
+                year_dir = NOTES_DIR / str(mtime.year)
+                year_dir.mkdir(parents=True, exist_ok=True)
+
+                month_name = mtime.strftime('%B')
+                month_file = year_dir / f"{mtime.month:02d}-{month_name}.md"
+
+                # Append with separator if file exists
+                mode = 'a' if month_file.exists() else 'w'
+                with open(month_file, mode, encoding='utf-8') as f:
+                    if mode == 'a':
+                        f.write('\n\n')
+                    f.write(content)
+                    if not content.endswith('\n'):
+                        f.write('\n')
+
+                imported.append({
+                    'source': md_file.name,
+                    'destination': f"{mtime.year}/{month_file.name}"
+                })
+
+            except Exception as e:
+                errors.append({
+                    'file': md_file.name,
+                    'error': str(e)
+                })
+
+        # Rebuild index after migration
+        reindex_result = update_index()
+
+        return {
+            'status': 'success' if not errors else 'partial',
+            'imported': len(imported),
+            'skipped': len(skipped),
+            'errors': len(errors),
+            'details': {
+                'imported_files': imported,
+                'skipped_files': skipped,
+                'errors': errors
+            },
+            'index_rebuilt': reindex_result.get('status') == 'success'
+        }
+
+    except Exception as e:
+        return {
+            'status': 'error',
+            'message': f'Migration failed: {str(e)}'
+        }
+
 def main():
     """Main entry point"""
     # Read command from stdin or command line
@@ -377,9 +547,9 @@ def main():
         data = {'command': sys.argv[1]}
     else:
         data = {'command': 'help'}
-    
+
     command = data.get('command', 'help')
-    
+
     # Execute command
     if command == 'add':
         result = add_note(
@@ -403,6 +573,12 @@ def main():
         result = get_stats()
     elif command == 'info':
         result = get_info()
+    elif command == 'clean-index':
+        result = clean_index()
+    elif command == 'validate':
+        result = validate()
+    elif command == 'migrate':
+        result = migrate(data.get('source_dir', ''))
     else:
         result = {
             'status': 'help',
@@ -411,12 +587,15 @@ def main():
                 'search': 'Search for notes',
                 'append': 'Append to existing note',
                 'reindex': 'Rebuild search index',
+                'clean-index': 'Safely remove and rebuild index',
+                'validate': 'Check note files for issues',
+                'migrate': 'Import existing markdown files',
                 'stats': 'Get notes statistics',
                 'info': 'Get notes directory info and paths'
             },
             'usage': 'echo \'{"command":"search","query":"test"}\' | python3 notes_manager.py'
         }
-    
+
     # Output result as JSON
     print(json.dumps(result, indent=2))
     return 0

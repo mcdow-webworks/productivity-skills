@@ -19,12 +19,12 @@ def create_skill_zip(skill_dir, output_zip):
             zipf.write(skill_md, 'SKILL.md')
             print(f"Added: SKILL.md")
 
-        # Add all files in hooks/ directory
-        hooks_dir = skill_path / 'hooks'
-        if hooks_dir.exists():
-            for file in hooks_dir.rglob('*'):
+        # Add all files in scripts/ directory
+        scripts_dir = skill_path / 'scripts'
+        if scripts_dir.exists():
+            for file in scripts_dir.rglob('*'):
                 if file.is_file() and not file.name.endswith('.gz'):
-                    arcname = f"hooks/{file.relative_to(hooks_dir).as_posix()}"
+                    arcname = f"scripts/{file.relative_to(scripts_dir).as_posix()}"
                     zipf.write(file, arcname)
                     print(f"Added: {arcname}")
 
