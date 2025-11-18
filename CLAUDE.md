@@ -16,6 +16,8 @@ This is a **Claude Skills marketplace plugin** that provides AI-native productiv
 productivity-skills/
 ├── .claude-plugin/
 │   └── marketplace.json          # Plugin marketplace manifest
+├── .github/
+│   └── research/                 # Development research and analysis
 ├── plugins/
 │   └── productivity-suite/       # Self-contained plugin bundle
 │       └── skills/               # Production-ready skills
@@ -77,6 +79,30 @@ The skill responds to natural phrases:
 - Adding: "Note that...", "Add a note about...", "Remember that..."
 - Searching: "What did I note about...", "Status of...", "Find my notes on..."
 - Updating: "Add to the X note...", "Update X with...", "Append to X..."
+
+## Development Resources
+
+### Research and Analysis Documents
+
+**Location:** `.github/research/`
+
+All development research, analysis, and summary documents should be placed in `.github/research/`. This keeps the repository clean for end users while preserving valuable context for contributors.
+
+**Convention:** When conducting research for features, bug fixes, or architectural decisions:
+
+1. Create comprehensive research/analysis documents in `.github/research/`
+2. Use descriptive filenames: `research-<topic>.md`, `analysis-<issue>.md`, `summary-<topic>.md`
+3. Include findings, trade-offs, recommendations, and references
+4. Link to these documents from GitHub issues for context
+
+**Current Research Documents:**
+- `research-cross-platform-paths.md` - Cross-platform file path handling best practices
+- `research-hooks-vs-utility-scripts.md` - Claude Code hooks vs utility scripts distinction
+- `research-tiered-trigger-systems.md` - Natural language trigger system design
+- `analysis-notes-manager-issues.md` - notes_manager.py issue analysis
+- `summary-path-best-practices.md` - Quick reference for path handling
+
+**Note:** GitHub issue descriptions are stored in GitHub Issues (#1, #2, etc.), not as markdown files in the repository.
 
 ## Development Commands
 
