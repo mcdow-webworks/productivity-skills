@@ -593,7 +593,7 @@ def main():
                 'stats': 'Get notes statistics',
                 'info': 'Get notes directory info and paths'
             },
-            'usage': 'echo \'{"command":"search","query":"test"}\' | python3 notes_manager.py'
+            'usage': 'echo \'{"command":"search","query":"test"}\' | python notes_manager.py'
         }
 
     # Output result as JSON

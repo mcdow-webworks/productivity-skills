@@ -1,203 +1,353 @@
-# Research Documentation Index
+# Research Index - Best Practices for Claude Skills Development
 
 **Last Updated:** 2025-11-18
-
-This directory contains research documentation, analysis, and best practices for the productivity-skills plugin development.
-
----
-
-## Latest Research: Skill Execution Environment (2025-11-18)
-
-### Key Finding
-
-Claude Code provides the `${CLAUDE_SKILL_ROOT}` environment variable that points to the absolute path of the skill directory. Skills execute in the user's working directory, NOT the skill directory, so all script references must use this variable.
-
-### Quick Reference Documents
-
-**For Developers:**
-- **summary-skill-path-best-practices.md** - Quick reference for proper path handling
-- Start here for copy-paste examples and common patterns
-
-**For Understanding:**
-- **research-skill-execution-environment.md** - Comprehensive research on skill execution
-- Deep dive into how Claude Code executes skills, manages paths, and accesses resources
-
-**For Verification:**
-- **action-required-path-fix.md** - Verification that our skill follows best practices
-- Documents that SKILL.md already correctly uses `${CLAUDE_SKILL_ROOT}`
+**Status:** Active research collection for productivity-skills plugin
 
 ---
 
-## All Research Documents
+## Overview
 
-### Skill Framework & Best Practices
-
-**research-skill-execution-environment.md** (18KB, 2025-11-18)
-- How Claude Code executes skills
-- Plugin installation locations
-- Working directory behavior
-- ${CLAUDE_SKILL_ROOT} environment variable
-- Cross-platform path handling
-- Security considerations
-
-**research-skill-documentation-best-practices.md** (28KB, 2025-11-17)
-- SKILL.md structure and frontmatter
-- Progressive disclosure techniques
-- Reference file organization
-- Best practices for skill authoring
-
-**summary-skill-path-best-practices.md** (6KB, 2025-11-18)
-- Quick reference for path handling
-- Common patterns and examples
-- Mistakes to avoid
-- Testing checklist
-
-**summary-skill-documentation-structure.md** (9KB, 2025-11-17)
-- SKILL.md organization
-- Frontmatter requirements
-- File structure recommendations
-
-### Technical Implementation
-
-**research-cross-platform-paths.md** (23KB, 2025-11-17)
-- Cross-platform path handling in Python
-- pathlib.Path best practices
-- Windows vs Unix considerations
-- OneDrive detection patterns
-
-**research-hooks-vs-utility-scripts.md** (16KB, 2025-11-17)
-- Distinction between hooks and utility scripts
-- When to use each pattern
-- Script organization strategies
-
-**research-tiered-trigger-systems.md** (29KB, 2025-11-17)
-- Natural language trigger design
-- Skill invocation patterns
-- Frontmatter vs body triggers
-
-### Code Analysis & Verification
-
-**action-required-path-fix.md** (8KB, 2025-11-18)
-- Verification that skill uses ${CLAUDE_SKILL_ROOT} correctly
-- Impact assessment
-- Testing recommendations
-- Best practices confirmation
-
-**code-review-2025-11-17.md** (20KB, 2025-11-17)
-- Comprehensive code review of note-taking skill
-- Architecture analysis
-- Recommendations for improvements
-
-**analysis-notes-manager-issues.md** (16KB, 2025-11-17)
-- Analysis of notes_manager.py implementation
-- Relevance scoring algorithm
-- Entry matching behavior
-- Known issues and solutions
+This directory contains comprehensive research on best practices for developing cross-platform, portable Claude Skills. All research is evidence-based, citing official Anthropic documentation, Python standards (PEPs), and industry best practices.
 
 ---
 
-## Research Process
+## Quick Reference Guide
 
-### How Research Documents Are Created
+### Python Executable Naming
 
-1. **Identify Question:** What do we need to understand?
-2. **Gather Information:** Official docs, community resources, GitHub examples
-3. **Experiment:** Test hypotheses with actual code
-4. **Document Findings:** Create comprehensive research documents
-5. **Create Summaries:** Extract quick reference guides
-6. **Update Code:** Apply learnings to actual implementation
+**Question:** Should I use `python` or `python3` in SKILL.md?
 
-### Research Document Naming Convention
+**Answer:** Use `python` (not `python3`)
 
-**Prefix Meanings:**
-- `research-` - Comprehensive research with sources and analysis
-- `summary-` - Quick reference extracted from research
-- `analysis-` - Deep dive into specific code or issue
-- `action-required-` - Verification or action items
+**Source:** `summary-python-executable-recommendations.md`
 
-**Topic Structure:**
-- Clear, descriptive topic name
-- Use hyphens for readability
-- Include version date in document
-
-### When to Create Research Documents
-
-**Create research documents when:**
-- Investigating framework behavior not clearly documented
-- Analyzing architectural decisions
-- Documenting best practices discovered through testing
-- Recording solutions to non-trivial problems
-
-**Don't create research documents for:**
-- Trivial code changes
-- Standard programming patterns
-- Well-documented features
-- One-off bug fixes
+**Rationale:**
+- Windows only has `python.exe` (no `python3.exe`)
+- Anthropic's official skills use `python`
+- Works in virtual environments on all platforms
+- Follows PEP 394 recommendations for venv usage
 
 ---
 
-## Key Learnings Summary
+### Script Paths
 
-### 2025-11-18: ${CLAUDE_SKILL_ROOT} is Essential
+**Question:** How should I reference scripts in SKILL.md?
 
-**Discovery:** Skills execute in user's working directory, not skill directory.
+**Answer:** Use relative paths with forward slashes: `scripts/helper.py`
 
-**Impact:** Must use `${CLAUDE_SKILL_ROOT}/scripts/script.py` for all resource references.
+**Source:** `research-skill-script-invocation-patterns.md`
 
-**Our Status:** SKILL.md already follows this best practice ✓
-
-### 2025-11-17: Relevance Scoring Needs Heading Prioritization
-
-**Discovery:** Content matches were overwhelming heading matches in search results.
-
-**Solution:** Exact phrase in heading gets +500 points, content capped at +50.
-
-**Impact:** Updates target correct entries, no more "fouled up" notes.
-
-### 2025-11-17: OneDrive Path Detection Critical for Windows
-
-**Discovery:** Windows with OneDrive creates two Documents folders.
-
-**Solution:** Automatically detect and prefer OneDrive path when present.
-
-**Impact:** Consistency between Claude Desktop and Claude Code.
-
-### 2025-11-17: Progressive Disclosure Reduces Context Pollution
-
-**Discovery:** Large skills consume too much context with every invocation.
-
-**Solution:** Move advanced details to separate reference files.
-
-**Impact:** SKILL.md stays concise, advanced features available on-demand.
+**Rationale:**
+- Skills execute from skill base directory
+- Forward slashes work in bash on all platforms (including Windows Git Bash)
+- Official Claude Code documentation requires forward slashes
+- Portable across all installation methods
 
 ---
 
-## Official Documentation References
+### Working Directory
 
-### Primary Sources
+**Question:** What is the working directory when my script runs?
 
-**Claude Code Documentation:**
-- Skills: https://code.claude.com/docs/en/skills
-- Plugins: https://code.claude.com/docs/en/plugins
-- Agent SDK: https://docs.claude.com/en/docs/agent-sdk/overview
+**Answer:** The skill's base directory (where SKILL.md is located)
 
-**Agent Skills:**
-- Overview: https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview
-- Best Practices: https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices
+**Source:** `research-skill-script-invocation-patterns.md`
 
-**Community Resources:**
-- Anthropic Skills Repository: https://github.com/anthropics/skills
-- Awesome Claude Skills: https://github.com/travisvn/awesome-claude-skills
-- Skills Specification: https://github.com/anthropics/skills/blob/main/agent_skills_spec.md
+**Evidence:** Claude Code documentation: "The base path enables Claude Code to locate and execute scripts bundled with the skill relative to that folder."
 
-### Supplementary Resources
+---
 
-**Blog Posts:**
-- Inside Claude Code Skills: https://mikhail.io/2025/10/claude-code-skills/
-- What to Know About Claude Skills: https://bdtechtalks.substack.com/p/what-to-know-about-claude-skills
+### Cross-Platform Paths
 
-**GitHub Issues:**
-- CLAUDECODE environment variable: https://github.com/anthropics/claude-code/issues/531
+**Question:** How do I handle file paths in Python scripts for skills?
+
+**Answer:** Use `pathlib.Path` and forward slashes
+
+**Source:** `research-cross-platform-paths.md`
+
+**Example:**
+```python
+from pathlib import Path
+
+# Correct - works everywhere
+notes_dir = Path.home() / "Documents" / "notes"
+
+# Wrong - platform-specific separators
+notes_dir = os.path.join(os.path.expanduser("~"), "Documents", "notes")
+```
+
+---
+
+### Shebang Lines
+
+**Question:** What shebang should I use in Python scripts?
+
+**Answer:** `#!/usr/bin/env python3`
+
+**Source:** `summary-python-executable-recommendations.md`
+
+**Rationale:**
+- Ignored on Windows (treated as comment)
+- Ensures Python 3 on Unix systems
+- Follows PEP 394 recommendations
+- Different from command invocation (which should use `python`)
+
+---
+
+### Data Passing
+
+**Question:** How should I pass data to scripts?
+
+**Answer:** JSON via stdin (not command-line arguments)
+
+**Source:** `research-skill-script-invocation-patterns.md`
+
+**Example:**
+```bash
+# Correct - secure
+echo '{"command":"search","query":"user input"}' | python scripts/helper.py
+
+# Wrong - injection risk
+python scripts/helper.py "user input"
+```
+
+---
+
+## Research Documents
+
+### Core Best Practices
+
+#### 1. Python Executable Naming
+
+**Files:**
+- `research-python-executable-naming.md` - Full research with citations
+- `summary-python-executable-recommendations.md` - Quick actionable summary
+
+**Key Findings:**
+- Use `python` not `python3` in SKILL.md examples
+- Shebang should still use `#!/usr/bin/env python3`
+- Windows compatibility is the driving factor
+- Anthropic's official skills use `python`
+
+**Authority Sources:**
+- PEP 394 (Official Python standard)
+- Anthropic skills repository (webapp-testing)
+- Python Windows documentation
+- Claude Code documentation
+
+**Status:** Research complete, ready for implementation
+
+---
+
+#### 2. Script Invocation Patterns
+
+**File:** `research-skill-script-invocation-patterns.md`
+
+**Key Findings:**
+- Working directory is skill base (where SKILL.md lives)
+- Use relative paths with forward slashes
+- stdin/stdout for data exchange is best practice
+- Skills must work across marketplace, manual, and ZIP installation
+
+**Authority Sources:**
+- Claude Code official documentation
+- Anthropic skills repository examples
+- Cross-platform bash best practices
+
+**Status:** Research complete, patterns validated
+
+---
+
+#### 3. Cross-Platform Path Handling
+
+**Files:**
+- `research-cross-platform-paths.md` - Best practices for file paths
+- `summary-path-best-practices.md` - Quick reference
+
+**Key Findings:**
+- Use `pathlib.Path` for all file operations
+- Always use forward slashes in path literals
+- Use `Path.home()` for user directory
+- Handle OneDrive on Windows (special case)
+
+**Authority Sources:**
+- Python pathlib documentation
+- Cross-platform development guides
+- Windows OneDrive behavior analysis
+
+**Status:** Research complete, implemented in notes_manager.py
+
+---
+
+### Implementation Analysis
+
+#### 4. Notes Manager Issues Analysis
+
+**File:** `analysis-notes-manager-issues.md`
+
+**Key Findings:**
+- Entry matching requires heading prioritization
+- Relevance scoring prevents wrong updates
+- File headers must be filtered from search
+- Timestamps essential for context
+
+**Status:** Analysis complete, fixes implemented
+
+---
+
+#### 5. Code Review (Security & Data Integrity)
+
+**File:** `code-review-2025-11-17.md`
+
+**Key Findings:**
+- Path traversal risk in migration (personal use acceptable)
+- Command injection mitigated by stdin usage
+- No atomic writes (backup recommended)
+- No file locking (single session recommended)
+
+**Status:** Reviewed - Future improvements tracked, acceptable for personal use
+
+---
+
+### Architecture Decisions
+
+#### 6. Hooks vs Utility Scripts
+
+**File:** `research-hooks-vs-utility-scripts.md`
+
+**Key Findings:**
+- notes_manager.py is utility script (not a hook)
+- Hooks integrate with Claude Code workflow
+- Utility scripts are general-purpose tools
+- Different use cases, different patterns
+
+**Status:** Distinction clarified
+
+---
+
+#### 7. Tiered Trigger Systems
+
+**File:** `research-tiered-trigger-systems.md`
+
+**Key Findings:**
+- Three-tier trigger system for natural language
+- Must-trigger phrases in description
+- Secondary triggers in body
+- Prevents false positives
+
+**Status:** Research complete, implemented in SKILL.md
+
+---
+
+### Issue Investigation
+
+#### 8. Skill Path Resolution Fix
+
+**Files:**
+- `path-resolution-issue-analysis.md` - Problem analysis
+- `action-required-path-fix.md` - Action plan
+- `summary-skill-path-resolution-fix.md` - Implementation summary
+- `summary-skill-path-best-practices.md` - Best practices
+
+**Key Findings:**
+- `${CLAUDE_SKILL_ROOT}` doesn't exist
+- Use relative paths instead
+- Skills execute from base directory
+- Simple paths more portable
+
+**Status:** Fixed in commit 4b84168
+
+---
+
+### Environment & Execution
+
+#### 9. Skill Execution Environment
+
+**File:** `research-skill-execution-environment.md`
+
+**Key Findings:**
+- Skills run in user's local environment (not containerized)
+- Uses user's Python installation
+- Environment variables available
+- No special Claude-provided variables
+
+**Status:** Research complete
+
+---
+
+## Research Methodology
+
+### Sources by Authority Level
+
+**HIGHEST (Official Standards):**
+- Python Enhancement Proposals (PEPs)
+- Official Python documentation
+- POSIX/ISO standards
+
+**HIGH (Official Anthropic):**
+- Anthropic skills repository
+- Claude Code documentation
+- Claude API documentation
+
+**MEDIUM-HIGH (Industry Standards):**
+- Well-established cross-platform guides
+- Security best practices (OWASP, etc.)
+- Multiple corroborating sources
+
+**MEDIUM (Community Consensus):**
+- Stack Overflow discussions
+- Third-party tutorials (when validated)
+- Common patterns in open source
+
+**LOW (Anecdotal):**
+- Single blog posts
+- Unverified claims
+- Personal experience without validation
+
+### Research Process
+
+1. **Question Identification:** Specific, answerable question
+2. **Official Source Check:** Anthropic docs first
+3. **Standard Check:** Relevant PEPs, RFCs, ISO standards
+4. **Community Validation:** Cross-reference multiple sources
+5. **Testing:** Validate findings on multiple platforms
+6. **Documentation:** Record sources, authority level, findings
+7. **Recommendation:** Actionable guidance with confidence level
+
+---
+
+## Best Practices Summary
+
+### For SKILL.md Authors
+
+1. Use `python` not `python3` in examples
+2. Use forward slashes for all paths
+3. Use relative paths from skill root
+4. Pass data via stdin (JSON recommended)
+5. Document Python version requirements
+6. Include clear trigger phrases in description
+7. Test on Windows, macOS, Linux
+
+### For Python Script Authors
+
+1. Use `#!/usr/bin/env python3` shebang
+2. Use `pathlib.Path` for all file operations
+3. Read input from stdin, write to stdout
+4. Use JSON for structured data
+5. Handle errors gracefully with JSON responses
+6. Validate user inputs (paths, commands)
+7. Support Python 3.7+ (no modern-only syntax)
+8. Use forward slashes in path literals
+
+### For Cross-Platform Compatibility
+
+1. Test on Windows (most restrictive)
+2. Test with Git Bash and PowerShell
+3. Test with system Python and venv
+4. Handle OneDrive paths on Windows
+5. Use `Path.home()` not hardcoded paths
+6. Document platform-specific requirements
+7. Provide clear error messages for missing deps
 
 ---
 
@@ -205,112 +355,47 @@ Claude Code provides the `${CLAUDE_SKILL_ROOT}` environment variable that points
 
 ### Adding New Research
 
-1. **Create Document:**
-   ```bash
-   touch .github/research/research-topic-name.md
-   ```
+1. **Create file:** `.github/research/research-<topic>.md`
+2. **Follow template:** Include Executive Summary, Sources, Findings, Recommendations
+3. **Cite sources:** Include URLs and authority levels
+4. **Update index:** Add to this file
+5. **Cross-reference:** Link related research
 
-2. **Use Template Structure:**
-   - Title with date
-   - Executive summary
-   - Detailed findings
-   - Examples and code
-   - References
-   - Conclusion
-
-3. **Create Summary (if needed):**
-   ```bash
-   touch .github/research/summary-topic-name.md
-   ```
-
-4. **Update This Index:**
-   - Add to appropriate section
-   - Update "Latest Research" if applicable
-   - Add key learning if significant
-
-### Research Document Template
+### Research Template
 
 ```markdown
-# Research: [Topic Name]
+# Research: <Topic>
 
-**Research Date:** YYYY-MM-DD
-**Researcher:** [Name]
-**Purpose:** [Why this research was needed]
-
----
+**Date:** YYYY-MM-DD
+**Focus:** Specific question or problem
+**Authority:** Primary sources used
 
 ## Executive Summary
+[TL;DR of findings and recommendations]
 
-[1-2 paragraphs summarizing key findings]
+## 1. Problem Statement
+[What we're investigating]
 
----
+## 2. Sources
+[List of authoritative sources with links]
 
-## Research Questions
+## 3. Findings
+[What we learned with evidence]
 
-1. [Question 1]
-2. [Question 2]
-...
+## 4. Recommendations
+[Actionable guidance]
 
----
-
-## Findings
-
-### [Topic 1]
-
-[Detailed findings with examples]
-
----
-
-## Recommendations
-
-[Actionable recommendations based on research]
-
----
-
-## References
-
-[Links to sources, documentation, examples]
-
----
-
-## Conclusion
-
-[Summary and next steps]
+## 5. References
+[Full citations]
 ```
 
 ---
 
-## Future Research Areas
+## License
 
-**Potential Topics:**
-
-1. **Performance Optimization:**
-   - Script execution overhead
-   - Context window usage
-   - Index rebuild frequency
-
-2. **Security Best Practices:**
-   - Input validation patterns
-   - Sanitization strategies
-   - Permission requirements
-
-3. **Testing Strategies:**
-   - Automated skill testing
-   - Cross-platform CI/CD
-   - Integration test patterns
-
-4. **Multi-Skill Coordination:**
-   - Skills calling other skills
-   - Shared state management
-   - Skill dependencies
-
-5. **Advanced Features:**
-   - Streaming output
-   - Interactive prompts
-   - Background processing
+Research documents are part of the productivity-skills project.
+See repository LICENSE for details.
 
 ---
 
-**Maintained By:** productivity-skills development team
-**Review Frequency:** After significant findings or framework updates
-**Version:** 1.0
+**Remember:** Good research saves debugging time. Document findings, cite sources, test assumptions.
