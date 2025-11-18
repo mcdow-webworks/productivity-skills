@@ -209,7 +209,7 @@ Claude: Analyzing 23 entries... Three main themes:
 **Required:**
 - **Claude Code** 2.0+ or **Claude Desktop**
 - **Python** 3.7+ (for notes_manager.py utility)
-- **Bash** shell (for hooks)
+- **Bash** shell (for script execution)
 
 **Optional:**
 - **Git** (for version controlling your notes)
@@ -225,7 +225,7 @@ productivity-skills/
 │       └── skills/              # Production skills
 │           └── note-taking/     # Note-taking skill
 │               ├── SKILL.md     # Skill definition
-│               ├── hooks/       # Utility scripts
+│               ├── scripts/     # Utility scripts
 │               │   └── notes_manager.py
 │               ├── templates/   # Note templates
 │               │   └── monthly-template.md

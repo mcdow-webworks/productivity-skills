@@ -21,7 +21,7 @@ productivity-skills/
 │       └── skills/               # Production-ready skills
 │           └── note-taking/      # Primary skill implementation
 │               ├── SKILL.md      # Skill definition with YAML frontmatter
-│               ├── hooks/
+│               ├── scripts/
 │               │   └── notes_manager.py  # Python utility for note operations
 │               ├── templates/
 │               │   └── monthly-template.md
@@ -96,19 +96,19 @@ Since this is a skills plugin (not a traditional development project), there are
    cd plugins/productivity-suite/skills/note-taking
 
    # Search notes
-   echo '{"command":"search","query":"test"}' | python hooks/notes_manager.py
+   echo '{"command":"search","query":"test"}' | python scripts/notes_manager.py
 
    # Add new note
-   echo '{"command":"add","heading":"Test - Note","content":"Test content"}' | python hooks/notes_manager.py
+   echo '{"command":"add","heading":"Test - Note","content":"Test content"}' | python scripts/notes_manager.py
 
    # Append to existing note (use search_term parameter)
-   echo '{"command":"append","search_term":"Test","content":"Update content"}' | python hooks/notes_manager.py
+   echo '{"command":"append","search_term":"Test","content":"Update content"}' | python scripts/notes_manager.py
 
    # Reindex notes
-   echo '{"command":"reindex"}' | python hooks/notes_manager.py
+   echo '{"command":"reindex"}' | python scripts/notes_manager.py
 
    # Get statistics
-   echo '{"command":"stats"}' | python hooks/notes_manager.py
+   echo '{"command":"stats"}' | python scripts/notes_manager.py
    ```
 
 ## Adding New Skills
@@ -119,7 +119,7 @@ When creating additional skills (task-management, time-tracking, etc.):
 2. Add `SKILL.md` with YAML frontmatter and clear documentation
 3. Include `name` and `description` in frontmatter (REQUIRED)
 4. Include trigger phrases and examples in the body
-5. Add supporting scripts in `hooks/` (Python 3.7+)
+5. Add supporting scripts in `scripts/` (Python 3.7+)
 6. Scripts should accept JSON via stdin, output JSON to stdout
 7. Update `.claude-plugin/marketplace.json` to include new skill
 8. Follow the note-taking skill as a template
@@ -176,7 +176,7 @@ python scripts/create-skill-zip.py
 
 **Important:** Claude Desktop requires ZIP file upload with SKILL.md at root level. The ZIP must contain:
 - SKILL.md (with YAML frontmatter at root)
-- hooks/ folder (scripts)
+- scripts/ folder (utility scripts)
 - templates/ folder (resources)
 - No nested directories before SKILL.md
 

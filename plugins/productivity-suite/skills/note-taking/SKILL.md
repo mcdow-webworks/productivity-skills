@@ -219,15 +219,15 @@ Should we capture:
 
 ### Python Helper (Optional)
 
-The `notes_manager.py` script provides programmatic access for advanced hooks:
+The `notes_manager.py` utility script provides direct access for advanced operations:
 
 ```bash
-# Reindex all notes
-python3 ~/productivity-skills/note-taking/hooks/notes_manager.py reindex
+# Reindex all notes (from skill directory)
+python3 scripts/notes_manager.py reindex
 
 # Search from command line
 echo '{"command":"search","query":"llms.txt"}' | \
-  python3 ~/productivity-skills/note-taking/hooks/notes_manager.py
+  python3 scripts/notes_manager.py
 ```
 
 ## Integration with Your Workflow
@@ -334,15 +334,16 @@ Claude understands natural language. Don't worry about exact syntax.
 If you already have markdown notes:
 
 ```bash
-# Move existing files to new structure
-cp ~/old-notes/*.md ~/Documents/notes/2025/
-
-# Let Claude index them
-cd ~/Documents/notes
-claude
+# Import existing notes with validation (from skill directory)
+echo '{"command":"migrate","source_dir":"~/old-notes"}' | \
+  python3 scripts/notes_manager.py
 ```
 
-Then ask: "Reindex all my notes and show me what you found"
+This will:
+- Import all markdown files with UTF-8 encoding
+- Organize by modification date into appropriate monthly files
+- Rebuild the search index automatically
+- Validate files and report any issues
 
 Claude will parse your existing entries and make them searchable!
 
@@ -417,11 +418,13 @@ ls -la ~/Documents/notes/2025/
 
 ### "Search not working"
 
-Rebuild the index:
+Rebuild the index safely:
 ```bash
-rm ~/Documents/notes/.index.json
-# Then in Claude: "Reindex my notes"
+# From skill directory
+echo '{"command":"clean-index"}' | python3 scripts/notes_manager.py
 ```
+
+Or ask Claude: "Reindex all my notes"
 
 ## Privacy & Data
 
