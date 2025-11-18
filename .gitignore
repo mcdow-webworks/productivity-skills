@@ -52,3 +52,4 @@ my-notes/
 
 # Local Claude settings (user-specific)
 .claude/settings.local.json
+.worktrees
