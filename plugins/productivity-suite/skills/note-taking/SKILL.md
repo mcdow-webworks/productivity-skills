@@ -52,13 +52,30 @@ echo '{"command":"add","heading":"Work - Implemented feature X","content":"Succe
 ```
 
 **Category Inference:**
+IMPORTANT: Always construct a meaningful heading. NEVER use "Untitled" or generic headings.
+
 Use keywords to infer category:
-- "fixed", "built", "implemented" → Work
-- "learned", "discovered" → Learning
-- "discussed", "meeting" → Meeting
-- "idea", "what if" → Idea
-- "decided", "will" → Decision
-- "how", "why" → Question
+- "fixed", "built", "implemented", "deployed", "created" → Work
+- "learned", "discovered", "realized", "understood" → Learning
+- "discussed", "meeting", "talked about", "decided in meeting" → Meeting
+- "idea", "what if", "consider", "might", "could" → Idea
+- "decided", "will", "going to", "plan to" → Decision
+- "how", "why", "question about", "wondering" → Question
+- "record", "save", "bookmark", "found", "reference", "check out" → Reference
+- "note that", "remember", "important" → Note (general)
+
+**Heading Construction:**
+1. Match user's keywords to a category (use the patterns above)
+2. Extract the main topic/subject as the brief description
+3. Format: "Category - Brief description" (e.g., "Reference - Factory.ai alternatives")
+4. If no keyword match: analyze content and choose the most relevant category
+5. NEVER use "Untitled" - always extract a meaningful description from the content
+
+**Examples:**
+- "Record these links to Factory.ai" → "Reference - Factory.ai resources"
+- "I learned how SSH works" → "Learning - SSH authentication mechanism"
+- "We decided to use Python" → "Decision - Use Python for scripts"
+- "Fixed the build error" → "Work - Fixed build error"
 
 ### 2. Search Notes
 
@@ -203,11 +220,12 @@ When errors occur, inform the user clearly and suggest corrective action.
 
 **Adding Notes:**
 1. Extract key information from user's message
-2. Infer appropriate category from keywords
-3. Construct heading as "Category - Brief description"
-4. Include full context in content
-5. Execute add command
-6. Confirm to user with category used
+2. Infer appropriate category from keywords (see Category Inference section)
+3. Extract main topic/subject from the message
+4. Construct heading as "Category - Brief description" (NEVER use "Untitled")
+5. Include full context in content
+6. Execute add command
+7. Confirm to user with category and description used
 
 **Searching Notes:**
 1. Extract search terms from user's query
