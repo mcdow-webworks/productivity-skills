@@ -11,320 +11,135 @@ allowed-tools: Bash
 **YOU MUST ALWAYS:**
 - Use `scripts/notes_manager.py` for ALL note operations
 - Pass JSON commands via stdin to the script
-- Parse JSON responses from the script and present them conversationally
+- Parse JSON responses and present them conversationally
 
 **YOU MUST NEVER:**
-- Use Read, Write, or Edit tools directly on note files in `~/Documents/notes/` or `~/OneDrive/Documents/notes/`
-- Bypass the script to manipulate markdown files or `.index.json`
-- Access note files directly with any tool other than the notes_manager.py script
+- Use Read, Write, or Edit tools on note files in `~/Documents/notes/` or `~/OneDrive/Documents/notes/`
+- Bypass the script to manipulate `.index.json` or markdown files directly
 
-## Script Location
+## Script Invocation
 
 ```bash
-scripts/notes_manager.py
+echo "{\"command\":\"<cmd>\",\"param\":\"value\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 ```
 
-The script automatically detects the notes directory (OneDrive on Windows, Documents otherwise, or `$NOTES_DIR` if set).
+**Path notes:**
+- Use full path (skill can be invoked from any working directory)
+- Tilde (~) expands to user home on all platforms (Windows: `C:\Users\username\`, macOS/Linux: `/home/username/`)
+- Path shown is for standard marketplace installation; adjust if installed manually
 
-## Available Commands
+**Cross-platform notes:**
+- Use `python` (not `python3`) - works on Windows, macOS, Linux
+- Use double quotes with escaped inner quotes: `echo "{\"command\":\"...\"}"` (works on all platforms)
+- Forward slashes work everywhere (Python accepts them on Windows)
+- Script auto-detects notes directory (OneDrive on Windows, Documents otherwise, or `$NOTES_DIR` if set)
 
-### 1. Add Note
+## API Commands
 
-**When:** User says "Note that...", "Remember that...", "Add a note about..."
+### add - Create new note
 
 **Command:**
 ```bash
-echo '{"command":"add","heading":"Category - Brief description","content":"Full note content"}' | python scripts/notes_manager.py
-```
-
-**Parameters:**
-- `heading` (required): Format "Category - Description" (e.g., "Work - Fixed cache bug")
-- `content` (required): Full note text with markdown support
-
-**Response:**
-```json
-{"success": true, "message": "Note added to 2025/11-November.md", "file": "/path/to/file.md"}
-```
-
-**Example:**
-```bash
-echo '{"command":"add","heading":"Work - Implemented feature X","content":"Successfully completed with tests and documentation"}' | python scripts/notes_manager.py
-```
-
-**Category Inference:**
-IMPORTANT: Always construct a meaningful heading. NEVER use "Untitled" or generic headings.
-
-Use keywords to infer category:
-- "fixed", "built", "implemented", "deployed", "created" → Work
-- "learned", "discovered", "realized", "understood" → Learning
-- "discussed", "meeting", "talked about", "decided in meeting" → Meeting
-- "idea", "what if", "consider", "might", "could" → Idea
-- "decided", "will", "going to", "plan to" → Decision
-- "how", "why", "question about", "wondering" → Question
-- "record", "save", "bookmark", "found", "reference", "check out" → Reference
-- "note that", "remember", "important" → Note (general)
-
-**Heading Construction:**
-1. Match user's keywords to a category (use the patterns above)
-2. Extract the main topic/subject as the brief description
-3. Format: "Category - Brief description" (e.g., "Reference - Factory.ai alternatives")
-4. If no keyword match: analyze content and choose the most relevant category
-5. NEVER use "Untitled" - always extract a meaningful description from the content
-
-**Examples:**
-- "Record these links to Factory.ai" → "Reference - Factory.ai resources"
-- "I learned how SSH works" → "Learning - SSH authentication mechanism"
-- "We decided to use Python" → "Decision - Use Python for scripts"
-- "Fixed the build error" → "Work - Fixed build error"
-
-### 2. Search Notes
-
-**When:** User asks "What did I note about...", "Show me my notes on...", "Find in my notes..."
-
-**Command:**
-```bash
-echo '{"command":"search","query":"search terms"}' | python scripts/notes_manager.py
-```
-
-**Parameters:**
-- `query` (required): Search terms to find in headings and content
-
-**Response:**
-```json
-{
-  "success": true,
-  "results": [
-    {
-      "heading": "Work - Note title",
-      "content": "Preview...",
-      "file": "2025/11-November.md",
-      "date": "2025-11-17",
-      "relevance_score": 520
-    }
-  ],
-  "count": 1
-}
-```
-
-**Example:**
-```bash
-echo '{"command":"search","query":"Claude Code"}' | python scripts/notes_manager.py
-```
-
-**Presenting Results:**
-- High relevance (≥500): Show full detail
-- Multiple results: List by relevance with dates
-- No results: Offer to create new note
-
-### 3. Update Note (Append)
-
-**When:** User says "Add to my note about...", "Update my X note with..."
-
-**Command:**
-```bash
-echo '{"command":"append","search_term":"unique term to find note","content":"Additional content"}' | python scripts/notes_manager.py
-```
-
-**Parameters:**
-- `search_term` (required): Term to find the target note (must match with relevance ≥50)
-- `content` (required): Content to append (script adds timestamp automatically)
-
-**Response (Success):**
-```json
-{"success": true, "message": "Appended to note", "matched_heading": "Work - Original title"}
-```
-
-**Response (Weak Match):**
-```json
-{
-  "success": false,
-  "error": "No note found matching 'term' with sufficient relevance (minimum: 50)",
-  "alternatives": ["Work - Similar note (score: 45)"]
-}
-```
-
-**Important:** Minimum relevance threshold of 50 prevents incorrect updates. If search term doesn't strongly match, suggest alternatives or create new note.
-
-**Example:**
-```bash
-echo '{"command":"append","search_term":"feature X","content":"Deployed to production successfully"}' | python scripts/notes_manager.py
-```
-
-### 4. Reindex
-
-**When:** User says "Reindex my notes" or after manual file edits
-
-**Command:**
-```bash
-echo '{"command":"reindex"}' | python scripts/notes_manager.py
+echo "{\"command\":\"add\",\"heading\":\"Category - Brief description\",\"content\":\"Note text\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 ```
 
 **Response:**
 ```json
-{"success": true, "message": "Reindexed 145 notes from 12 files", "stats": {"files": 12, "entries": 145}}
+{"status":"success","file":"2025/11-November.md","heading":"Work - Title","path":"/full/path.md"}
 ```
 
-### 5. Get Statistics
+**Heading:** Always "Category - Description". Never "Untitled". Infer category from keywords:
+- Work: "fixed", "built", "implemented", "deployed"
+- Learning: "learned", "discovered", "realized"
+- Meeting: "meeting", "discussed", "decided in meeting"
+- Idea: "what if", "consider", "idea"
+- Decision: "decided", "will", "plan to"
+- Question: "how", "why", "question about"
+- Reference: "record", "bookmark", "found"
+- Note: "note that", "remember"
 
-**When:** User asks "How many notes", "Show my note statistics"
+### search - Find notes
 
 **Command:**
 ```bash
-echo '{"command":"stats"}' | python scripts/notes_manager.py
+echo "{\"command\":\"search\",\"query\":\"search terms\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 ```
 
 **Response:**
 ```json
-{
-  "success": true,
-  "total_entries": 145,
-  "categories": {"Work": 45, "Learning": 32},
-  "date_range": {"earliest": "2025-01-15", "latest": "2025-11-17"}
-}
+[
+  {
+    "heading":"Work - Title",
+    "content":"Preview text...",
+    "file":"2025/11-November.md",
+    "date":"2025-11-17",
+    "relevance":520
+  }
+]
 ```
 
-### 6. Migrate Notes
+Returns array of matches (max 10). Empty `[]` if none. Present high relevance (≥500) in full detail; multiple results by relevance with dates.
 
-**When:** User wants to import existing markdown notes
+### append - Update existing note
 
 **Command:**
 ```bash
-echo '{"command":"migrate","source_dir":"/path/to/old-notes"}' | python scripts/notes_manager.py
+echo "{\"command\":\"append\",\"search_term\":\"unique term\",\"content\":\"Update text\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 ```
 
-**Parameters:**
-- `source_dir` (required): Path to directory with markdown files
-
-**Response:**
+**Response (success):**
 ```json
-{"success": true, "message": "Migrated 23 notes from 15 files"}
+{"status":"success","heading":"Work - Original title","file":"2025/11-November.md","alternatives":[]}
 ```
 
-**⚠️ Security Note:** Only migrate from trusted directories within your home directory (Documents, Desktop). Path validation is limited.
+**Response (no match):**
+```json
+{"status":"not_found","query":"term","suggestion":"No matching entry found. Create a new note?"}
+```
+
+**Response (weak match):**
+```json
+{"status":"ambiguous","query":"term","alternatives":[{"heading":"Work - Title","relevance":45}],"message":"No strong match found."}
+```
+
+Requires relevance ≥50. If weak match, suggest alternatives or create new note.
+
+### Other Commands
+
+All use same pattern: `echo "{\"command\":\"...\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py`
+
+**reindex:** Rebuild search index → `{"status":"success","total_files":12,"total_entries":145}`
+
+**stats:** Get statistics → `{"status":"success","total_entries":145,"categories":{...}}`
+
+**migrate:** Import from `source_dir` → `{"status":"success","imported":23,"skipped":2}`
+
+**info:** Get directory info → `{"status":"success","notes_dir":"/path","onedrive_detected":true}`
+
+**validate:** Check files → `{"status":"success","files_checked":12,"issues":[...]}`
+
+**clean-index:** Remove and rebuild → `{"status":"success","message":"Removed and rebuilt"}`
 
 ## Error Handling
 
-All commands return JSON with `success` field. Always check it:
+All commands include `status` field. Check for errors:
 
 ```json
-{
-  "success": false,
-  "error": "Error message",
-  "details": "Additional context"
-}
+{"status":"error","message":"Description of error"}
 ```
 
-When errors occur, inform the user clearly and suggest corrective action.
+When errors occur, inform user clearly and suggest corrective action.
 
-## Workflow Guidelines
+## Workflows
 
-**Adding Notes:**
-1. Extract key information from user's message
-2. Infer appropriate category from keywords (see Category Inference section)
-3. Extract main topic/subject from the message
-4. Construct heading as "Category - Brief description" (NEVER use "Untitled")
-5. Include full context in content
-6. Execute add command
-7. Confirm to user with category and description used
+**Add:** Infer category from keywords → extract topic → format "Category - Description" → execute add → confirm
 
-**Searching Notes:**
-1. Extract search terms from user's query
-2. Execute search command
-3. Parse results and sort by relevance
-4. Present conversationally with dates and categories
-5. Summarize findings (e.g., "You have 3 notes across 2 months")
+**Search:** Extract terms → execute search → parse by relevance → present with dates → summarize
 
-**Updating Notes:**
-1. Extract search term and update content
-2. Execute search first to find target note
-3. Check relevance score (must be ≥50)
-4. If strong match, execute append
-5. If weak match, suggest alternatives or create new
-6. Confirm update with timestamp
+**Update:** Extract search term → execute append → check status → handle weak matches → confirm with timestamp
 
-## Entry Format
+## Entry Format & Categories
 
-Notes are stored as markdown entries with automatic timestamps:
+Script automatically adds `**Created:** YYYY-MM-DD` to new notes and `**Update (YYYY-MM-DD):**` to updates.
 
-```markdown
-# Category - Brief description
-Content with multiple lines, code blocks, links, etc.
-
-**Created:** 2025-11-17
-
-**Update (2025-11-18):** Additional information
-```
-
-Script handles all timestamp management automatically.
-
-## Common Categories
-
-Suggest these categories when adding notes:
-- **Work** - Implementations, fixes, deployments
-- **Learning** - Discoveries, insights, realizations
-- **Meeting** - Discussions, decisions from meetings
-- **Idea** - New concepts, proposals
-- **Decision** - Conclusions, commitments
-- **Question** - Things to explore, uncertainties
-
-## Notes Directory Structure
-
-Understanding the structure (read-only knowledge - never manipulate directly):
-
-```
-~/Documents/notes/  (or ~/OneDrive/Documents/notes/ on Windows)
-├── 2025/
-│   ├── 01-January.md
-│   ├── 11-November.md
-│   └── 12-December.md
-├── .index.json          # Managed by script
-└── .gitignore
-```
-
-## Success Indicators
-
-You're using the skill correctly when:
-- ✅ All operations use `notes_manager.py`
-- ✅ You never directly access note files with Read/Write/Edit
-- ✅ You parse JSON responses and present conversationally
-- ✅ You handle errors gracefully
-- ✅ Updates go to correct notes (relevance ≥50)
-
-## Failure Indicators
-
-You're NOT using the skill correctly if:
-- ❌ You use Read tool on `~/Documents/notes/**/*.md`
-- ❌ You use Write/Edit tools to modify note files
-- ❌ You bypass the script for any operation
-- ❌ You directly access `.index.json`
-
-## Known Limitations & Risks (Personal Use)
-
-**⚠️ Security Considerations:**
-- **Path traversal risk** in migration command - only migrate from trusted directories
-- **Command injection possible** if JSON escaping fails in bash - script uses stdin to mitigate
-- **Environment variable NOTES_DIR** trusted without validation - use default location
-- **Error messages** may leak system paths - acceptable for personal use
-
-**⚠️ Data Integrity Risks:**
-- **No atomic write operations** - system crash during append can corrupt files (backup recommended)
-- **No file locking** - avoid running multiple Claude sessions simultaneously
-- **Index deletion without backup** in clean-index command
-- **Migration appends without validation** - validate source files manually first
-
-**✅ Mitigation for Personal Use:**
-- Keep regular backups (git recommended: `cd ~/Documents/notes && git init && git add . && git commit -m "backup"`)
-- Avoid migration from untrusted/unknown directories
-- Don't run multiple Claude sessions simultaneously on same notes
-- Use default NOTES_DIR location (don't override with environment variable)
-- Manual file edits: run reindex command after making changes
-
-**Future Improvements Tracked:**
-See `.github/research/code-review-2025-11-17.md` for comprehensive security and data integrity analysis from code review. Future versions should address:
-- Atomic write pattern (temp file + rename)
-- File locking for concurrent access
-- Input validation (length limits, sanitization)
-- Backup before destructive operations
-- Type hints and improved error handling
-
-**For Production Use:** Address critical findings in code review before deploying to multi-user environments.
+Categories: Work, Learning, Meeting, Idea, Decision, Question, Reference, Note

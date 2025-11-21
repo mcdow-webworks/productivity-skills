@@ -22,7 +22,7 @@ productivity-skills/
 │   └── productivity-suite/       # Self-contained plugin bundle
 │       └── skills/               # Production-ready skills
 │           └── note-taking/      # Primary skill implementation
-│               ├── SKILL.md      # Skill definition with YAML frontmatter
+│               ├── SKILL.md      # Lean implementation guide (145 lines)
 │               ├── scripts/
 │               │   └── notes_manager.py  # Python utility for note operations
 │               ├── templates/
@@ -30,7 +30,12 @@ productivity-skills/
 │               └── examples/
 │                   └── sample-notes.md   # Example note file
 ├── docs/                         # User documentation
-└── README.md                     # User-facing documentation
+│   ├── note-taking-guide.md      # Comprehensive user guide (383 lines)
+│   ├── installation.md           # Installation and troubleshooting
+│   ├── development.md            # Developer workflow
+│   ├── contributing.md           # Contributing guidelines
+│   └── faq.md                    # FAQ and troubleshooting
+└── README.md                     # Concise overview (271 lines)
 ```
 
 **Important:** This repository follows the Claude Code plugin marketplace pattern, NOT the simple skillDirectories approach. The root contains NO SKILL.md - individual skills are in `plugins/productivity-suite/skills/`.
@@ -118,24 +123,26 @@ Since this is a skills plugin (not a traditional development project), there are
 
 2. **Python Script Testing**:
    ```bash
-   # Test notes_manager.py directly
-   cd plugins/productivity-suite/skills/note-taking
+   # Use full path with tilde expansion (works from any directory)
+   SCRIPT=~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 
    # Search notes
-   echo '{"command":"search","query":"test"}' | python scripts/notes_manager.py
+   echo "{\"command\":\"search\",\"query\":\"test\"}" | python "$SCRIPT"
 
    # Add new note
-   echo '{"command":"add","heading":"Test - Note","content":"Test content"}' | python scripts/notes_manager.py
+   echo "{\"command\":\"add\",\"heading\":\"Test - Note\",\"content\":\"Test content\"}" | python "$SCRIPT"
 
    # Append to existing note (use search_term parameter)
-   echo '{"command":"append","search_term":"Test","content":"Update content"}' | python scripts/notes_manager.py
+   echo "{\"command\":\"append\",\"search_term\":\"Test\",\"content\":\"Update content\"}" | python "$SCRIPT"
 
    # Reindex notes
-   echo '{"command":"reindex"}' | python scripts/notes_manager.py
+   echo "{\"command\":\"reindex\"}" | python "$SCRIPT"
 
    # Get statistics
-   echo '{"command":"stats"}' | python scripts/notes_manager.py
+   echo "{\"command\":\"stats\"}" | python "$SCRIPT"
    ```
+
+   **Note:** Use `python` (not `python3`) and escaped double quotes for cross-platform compatibility.
 
 ## Adding New Skills
 
@@ -166,11 +173,13 @@ Optional frontmatter fields:
 - `metadata.documentation`: References to additional docs
 
 **Body Content:**
-- Clear and concise (under 500 lines recommended)
-- Example-driven
+- **Lean and focused** (under 200 lines strongly recommended)
+- **Implementation-only** - no user-facing documentation
+- Move user guides to `docs/` directory
+- Example-driven with complete, working code
 - Include conversational trigger phrases
-- Document edge cases and error handling
-- Use progressive disclosure (move details to reference files)
+- Document essential edge cases only
+- Use progressive disclosure (move details to separate docs)
 
 ## Distribution & Installation
 
@@ -187,24 +196,26 @@ git clone https://github.com/mcdow-webworks/productivity-skills.git
 cp -r plugins/productivity-suite "$APPDATA/Claude/plugins/"
 ```
 
-**Manual Installation (Claude Desktop - Web & App):**
-```bash
-# Create ZIP archive with proper path separators
-# Use the provided Python script (ensures forward slashes)
-python scripts/create-skill-zip.py
+**Claude Desktop Support:**
 
-# Then upload through UI:
-# 1. Go to Settings > Capabilities (claude.ai/settings/capabilities)
-# 2. Enable "Skills" toggle
-# 3. Click "Upload skill" and select note-taking-skill.zip
-# 4. Skill becomes available immediately (private to your account)
-```
+⚠️ **Not Yet Available** - Claude Desktop support is currently in planning phase.
 
-**Important:** Claude Desktop requires ZIP file upload with SKILL.md at root level. The ZIP must contain:
-- SKILL.md (with YAML frontmatter at root)
-- scripts/ folder (utility scripts)
-- templates/ folder (resources)
-- No nested directories before SKILL.md
+The current implementation uses the Skills system which is specific to Claude Code. To support Claude Desktop, an MCP (Model Context Protocol) server wrapper is needed.
+
+**Research Available:**
+- `.github/research/research-mcp-server-implementation.md` - Implementation research
+- `.github/research/summary-mcp-server-best-practices.md` - Best practices summary
+
+The MCP server would wrap `notes_manager.py` functionality and expose it through the Model Context Protocol, allowing Claude Desktop to interact with notes through the standard MCP interface rather than the Skills system.
+
+**Planned Approach:**
+1. Create MCP server that wraps notes_manager.py operations
+2. Map skill commands to MCP tools/resources
+3. Handle authentication and file permissions through MCP
+4. Maintain feature parity with Claude Code implementation
+5. Test on Claude Desktop (Web & App)
+
+See research documents for detailed implementation plan.
 
 **Custom notes directory** (optional - default is ~/Documents/notes):
 ```bash
@@ -231,10 +242,13 @@ export NOTES_DIR="$HOME/my-custom-notes"
 
 ## Platform Compatibility
 
-- **OS**: macOS, Linux, Windows (WSL)
+**Current Support (Claude Code):**
+- **OS**: macOS, Linux, Windows
 - **Python**: 3.7+ required for utility scripts
-- **Bash**: For optional hooks
-- **Git**: For version control (recommended)
+- **Claude**: Claude Code 2.0+
+
+**Future Support (Planned):**
+- **Claude Desktop** - Requires MCP server implementation (see Distribution & Installation section)
 
 ## Important Implementation Details
 
@@ -287,6 +301,21 @@ Legacy notes without categories are harder to scan and organize. Solution: Keywo
 
 ### 2025-11-16: Stick to Official YAML Frontmatter Specification
 When adding skills, use only documented frontmatter fields (`name`, `description`, `allowed-tools`, `metadata.*`). Custom fields may confuse users or break compatibility with future Claude versions. Document any optional fields clearly with their purpose.
+
+### 2025-11-20: SKILL.md Should Be Lean Implementation Guide Only
+The note-taking SKILL.md was refactored from 331 lines (verbose, mixed user/implementation content) to 145 lines (lean, implementation-only). Key learnings:
+- **Separate concerns**: SKILL.md = implementation instructions for Claude; docs/note-taking-guide.md = user documentation
+- **Essential only**: API commands with exact JSON formats, critical rules, brief workflow patterns
+- **No user docs**: Philosophy, troubleshooting, extensive examples → move to docs/
+- **Cross-platform**: Always use escaped double quotes `echo "{\"command\":\"...\"}"`; full paths with tilde `~/.claude/plugins/.../script.py`; `python` not `python3`
+
+### 2025-11-20: Documentation Structure Should Be Streamlined
+Consolidated documentation to eliminate duplication and establish clear hierarchy:
+- **README.md**: Concise overview (271 lines) with quick start and links
+- **docs/note-taking-guide.md**: Comprehensive user guide (383 lines)
+- **docs/installation.md**: Full installation and troubleshooting
+- **Single source of truth**: Each topic documented in one place only
+- **Research archived**: All design docs in `.github/research/` (not user-facing)
 
 ## Git Workflow Notes
 
