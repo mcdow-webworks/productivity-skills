@@ -19,6 +19,8 @@ allowed-tools: Bash
 
 ## Script Invocation
 
+**CRITICAL:** Always use the tilde path `~/.claude/plugins/...` with forward slashes exactly as shown below. NEVER use Windows-style paths like `C:\Users\...` with backslashes - they will fail in bash.
+
 ```bash
 echo "{\"command\":\"<cmd>\",\"param\":\"value\"}" | python ~/.claude/plugins/marketplaces/productivity-skills/plugins/productivity-suite/skills/note-taking/scripts/notes_manager.py
 ```
@@ -31,7 +33,8 @@ echo "{\"command\":\"<cmd>\",\"param\":\"value\"}" | python ~/.claude/plugins/ma
 **Cross-platform notes:**
 - Use `python` (not `python3`) - works on Windows, macOS, Linux
 - Use double quotes with escaped inner quotes: `echo "{\"command\":\"...\"}"` (works on all platforms)
-- Forward slashes work everywhere (Python accepts them on Windows)
+- **ALWAYS use forward slashes** in the path (Python accepts them on Windows) - NEVER use backslashes
+- The tilde `~` is properly expanded by bash on all platforms - use it instead of absolute paths
 - Script auto-detects notes directory (OneDrive on Windows, Documents otherwise, or `$NOTES_DIR` if set)
 
 ## API Commands
