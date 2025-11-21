@@ -50,6 +50,29 @@ These documents capture:
   - Natural language trigger system design
   - Tiered trigger architecture
 
+### MCP Server Implementation
+
+- **[research-mcp-server-implementation.md](./research-mcp-server-implementation.md)**
+  - Comprehensive MCP (Model Context Protocol) server architecture
+  - How to bridge Claude Desktop's remote environment to local machine resources
+  - Implementation patterns using FastMCP framework
+  - Security, error handling, and testing best practices
+  - Future extensibility patterns for wrapping external programs
+
+- **[summary-mcp-server-best-practices.md](./summary-mcp-server-best-practices.md)**
+  - Quick reference for implementing MCP servers
+  - 3-step quick start guide
+  - Tool design patterns and common pitfalls
+  - Testing workflow with MCP Inspector
+
+- **[implementation-plan-dual-mode-skills.md](./implementation-plan-dual-mode-skills.md)**
+  - **Status:** Planned (tabled for future implementation)
+  - Step-by-step plan to enable skills that work in both Claude Code (local) and Claude Desktop (remote)
+  - 5 phases: Refactoring, MCP server creation, testing, documentation, pattern documentation
+  - Timeline: 8-12 hours estimated
+  - Includes template for wrapping external programs like ePublisher AutoMap
+  - **Purpose:** Learning exercise for creating dual-mode skills with maximum efficiency
+
 ### Issue Analysis
 
 - **[analysis-notes-manager-issues.md](./analysis-notes-manager-issues.md)**

@@ -1,6 +1,6 @@
 # Research Index - Best Practices for Claude Skills Development
 
-**Last Updated:** 2025-11-18
+**Last Updated:** 2025-11-20
 **Status:** Active research collection for productivity-skills plugin
 
 ---
@@ -109,6 +109,39 @@ echo '{"command":"search","query":"user input"}' | python scripts/helper.py
 
 # Wrong - injection risk
 python scripts/helper.py "user input"
+```
+
+---
+
+### MCP Servers for Claude Desktop
+
+**Question:** How do I make my skill work in Claude Desktop (remote environment)?
+
+**Answer:** Create an MCP server wrapper using FastMCP
+
+**Source:** `research-mcp-server-implementation.md`
+
+**Rationale:**
+- Claude Desktop runs remotely, can't directly execute local scripts
+- MCP servers bridge the remote environment to local machine
+- Stdio transport provides secure, local communication
+- FastMCP minimizes boilerplate for Python scripts
+
+**Quick Start:**
+```python
+from fastmcp import FastMCP
+from my_script import MyLogic
+
+mcp = FastMCP(name="my-tool")
+
+@mcp.tool()
+def my_operation(param: str) -> dict:
+    """Tool description for Claude."""
+    logic = MyLogic()
+    return logic.operation(param)
+
+if __name__ == "__main__":
+    mcp.run()  # stdio transport by default
 ```
 
 ---
@@ -272,6 +305,33 @@ python scripts/helper.py "user input"
 - No special Claude-provided variables
 
 **Status:** Research complete
+
+---
+
+#### 10. MCP Server Implementation
+
+**File:** `research-mcp-server-implementation.md`
+
+**Key Findings:**
+- MCP servers bridge Claude Desktop to local machine resources
+- Use FastMCP for rapid development with minimal boilerplate
+- Stdio transport is most secure for local execution (no authentication needed)
+- Tools expose actions, resources expose data, prompts guide users
+- Dual-mode pattern enables skills to work in both Claude Code and Claude Desktop
+
+**Recommendations:**
+- Expose Python scripts as MCP tools (one tool per operation)
+- Use environment variables for detection (MCP_SERVER_MODE)
+- Configure via claude_desktop_config.json for automatic server launching
+- Follow error handling best practices (stdout for JSON-RPC, stderr for logs)
+
+**Authority Sources:**
+- Official MCP specification (modelcontextprotocol.io)
+- Anthropic MCP documentation and blog posts
+- FastMCP documentation and examples
+- Real-world MCP server implementations
+
+**Status:** Research complete - Ready for implementation
 
 ---
 
