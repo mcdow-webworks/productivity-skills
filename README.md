@@ -2,7 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Claude-Code-purple)](https://claude.ai/code)
-[![Claude Desktop](https://img.shields.io/badge/Claude-Desktop-purple)](https://claude.ai)
 
 Transform Claude into your AI-powered productivity partner. A collection of skills that make Claude an active participant in your personal knowledge management, task tracking, and daily workflows.
 
@@ -23,51 +22,17 @@ All while keeping your data local in simple markdown files.
 
 ## ✨ Quick Start (2 Minutes)
 
-### Installation
-
 **Claude Code:**
-
 ```bash
 /plugin marketplace add mcdow-webworks/productivity-skills
 /plugin install productivity-suite@productivity-skills
 ```
 
-Restart Claude Code to load the plugin.
+Then say: `"Note that I just discovered a great caching solution"`
 
-**Claude Desktop:**
+**That's it!** See [Installation Guide](docs/installation.md) for details and troubleshooting.
 
-1. Download [note-taking-skill.zip](https://github.com/mcdow-webworks/productivity-skills/raw/main/note-taking-skill.zip)
-2. Go to [claude.ai/settings/capabilities](https://claude.ai/settings/capabilities)
-3. Enable "Skills" toggle → Click "Upload skill" → Select the ZIP file
-
-**Important:** Claude Desktop requires file system permissions to access your Documents folder. See [Getting Started with Local MCP Servers](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop) for details on configuring file read/write/create permissions.
-
-### Start Using It!
-
-**No setup required!** The skill automatically creates your notes directory when you add your first note:
-- Default location: `~/Documents/notes/` (or `~/OneDrive/Documents/notes/` on Windows with OneDrive)
-- Organized by year: `~/Documents/notes/2025/`
-- Monthly files: `11-November.md`, `12-December.md`, etc.
-
-Open any Claude session and say:
-
-```
-"Note that I just discovered a great caching solution for the deployment"
-```
-
-That's it! You're now building an AI-navigable second brain.
-
-### Updating
-
-**Claude Code:**
-```bash
-/plugin marketplace remove productivity-skills
-/plugin marketplace add mcdow-webworks/productivity-skills
-/plugin install productivity-suite@productivity-skills
-```
-
-**Claude Desktop:**
-Download the latest [note-taking-skill.zip](https://github.com/mcdow-webworks/productivity-skills/raw/main/note-taking-skill.zip) and re-upload via Settings > Capabilities → Click skill name → Replace.
+> **Note:** Claude Desktop support is not yet available. The current implementation uses the Claude Code Skills system. Support for Claude Desktop via MCP server is in planning phase.
 
 ## 🚀 Available Skills
 
@@ -82,7 +47,7 @@ Transform markdown notes into an AI-navigable knowledge system. Claude becomes y
 - Pattern recognition and insight generation
 - Maintains simple markdown format
 
-[Full Note-Taking Documentation →](plugins/productivity-suite/skills/note-taking/SKILL.md)
+[Full Note-Taking Guide →](docs/note-taking-guide.md)
 
 **Example Usage:**
 ```
@@ -198,21 +163,22 @@ Claude: Analyzing 23 entries... Three main themes:
 
 ## 📚 Documentation
 
-- **[Installation Guide](docs/installation.md)** - Detailed setup for Claude Code & Desktop
+- **[Installation Guide](docs/installation.md)** - Detailed setup, troubleshooting, and updates
+- **[Note-Taking Guide](docs/note-taking-guide.md)** - Comprehensive usage guide
 - **[Development Guide](docs/development.md)** - Modifying skills and development workflow
-- **[Note-Taking Guide](docs/note-taking-guide.md)** - Comprehensive note-taking usage
 - **[Contributing](docs/contributing.md)** - How to add new skills
-- **[FAQ](docs/faq.md)** - Common questions
+- **[FAQ](docs/faq.md)** - Common questions and troubleshooting
 
 ## 🔧 Requirements
 
 **Required:**
-- **Claude Code** 2.0+ or **Claude Desktop**
+- **Claude Code** 2.0+
 - **Python** 3.7+ (for notes_manager.py utility)
-- **Bash** shell (for script execution)
 
 **Optional:**
 - **Git** (for version controlling your notes)
+
+> **Claude Desktop:** Not currently supported. MCP server implementation is in planning phase.
 
 ## 📂 Repository Structure
 
@@ -263,34 +229,7 @@ See [Contributing Guide](docs/contributing.md) for:
 
 ## 🐛 Troubleshooting
 
-### Skills not loading?
-
-```bash
-# Verify skill directory exists
-ls -la ~/productivity-skills/
-
-# Check Claude settings
-cat ~/.claude/settings.json | grep skillDirectories
-
-# Restart Claude session
-```
-
-### Notes not found?
-
-```bash
-# Check notes directory
-ls -la ~/Documents/notes/
-
-# Verify structure
-ls ~/Documents/notes/$(date +%Y)/
-
-# Rebuild index
-cd ~/Documents/notes
-claude
-# Then: "Reindex my notes"
-```
-
-See [FAQ](docs/faq.md) for more solutions.
+Having issues? See the [FAQ](docs/faq.md) for common problems and solutions, or check the [Installation Guide](docs/installation.md) for setup help.
 
 ## 📄 License
 

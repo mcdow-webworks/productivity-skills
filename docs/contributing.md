@@ -302,7 +302,7 @@ This is useful when:
 
 ```bash
 # Test Python script directly
-echo '{"command":"test"}' | python3 your-skill/hooks/script.py
+echo "{\"command\":\"test\"}" | python your-skill/scripts/script.py
 
 # Test in Claude
 cd ~/productivity-skills
