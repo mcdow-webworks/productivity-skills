@@ -317,6 +317,12 @@ Consolidated documentation to eliminate duplication and establish clear hierarch
 - **Single source of truth**: Each topic documented in one place only
 - **Research archived**: All design docs in `.github/research/` (not user-facing)
 
+### 2025-11-22: Entry Extraction Must Handle Leading Whitespace
+Markdown headings with leading whitespace (e.g., ` # Heading`) were not recognized as entry boundaries, causing entries to be merged incorrectly. This resulted in wrong content being attached to entries and false positive search results. Solution: Strip leading whitespace with `line.lstrip()` before checking if a line is a heading (`stripped.startswith('# ')`). This ensures all headings are properly recognized regardless of indentation.
+
+### 2025-11-22: Scoring Bonuses Should Only Apply to Actual Matches
+Applying scoring bonuses (like recency) unconditionally to all entries creates false positives where recent unrelated entries appear in search results. Solution: Calculate base score from content/heading matches first, then only apply bonuses when `base_score > 0`. This ensures bonuses enhance relevant results rather than creating false positives.
+
 ## Git Workflow Notes
 
 This repository follows standard GitHub workflow:
