@@ -52,13 +52,14 @@ def extract_entries(file_path: Path) -> List[Dict]:
         with open(file_path, 'r', encoding='utf-8') as f:
             for line in f:
                 # Check if line is a top-level heading (entry start)
-                if line.startswith('# ') and not line.startswith('## '):
+                stripped = line.lstrip()
+                if stripped.startswith('# ') and not stripped.startswith('## '):
                     if current_entry:
                         # Filter out file headers (e.g., "Notes - November 2025")
                         if not re.match(r'^Notes - \w+ \d{4}$', current_entry['heading']):
                             entries.append(current_entry)
                     current_entry = {
-                        'heading': line.strip('# \n'),
+                        'heading': stripped.strip('# \n'),
                         'content': '',
                         'file': str(file_path.relative_to(NOTES_DIR)),
                         'date': extract_date_from_file(file_path)
@@ -140,45 +141,49 @@ def search_notes(query: str, max_results: int = 10) -> List[Dict]:
 
 def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
     """Calculate relevance score for search results"""
-    score = 0
+    heading_score = 0
+    content_score = 0
     heading_lower = entry['heading'].lower()
     content_lower = entry['content'].lower()
 
     # Exact phrase match in heading (highest priority - overwhelming bonus)
     if query in heading_lower:
-        score += 500  # Massively increased to ensure heading matches always win
+        heading_score += 500
 
     # All terms in heading (but not exact phrase)
     elif all(term in heading_lower for term in query_terms):
-        score += 100  # Increased from 50
+        heading_score += 100
 
     # Individual terms in heading
     else:
         for term in query_terms:
             if term in heading_lower:
-                score += 20
+                heading_score += 20
 
     # Terms in content (capped to prevent overwhelming heading matches)
-    content_score = 0
     for term in query_terms:
         content_score += content_lower.count(term) * 5
     # Cap content contribution at 50 points
-    score += min(content_score, 50)
-    
-    # Boost recent entries (reduced to prevent generic entries from ranking too high)
-    try:
-        date = datetime.fromisoformat(entry['date'])
-        days_old = (datetime.now() - date).days
-        if days_old < 30:
-            score += 10  # Reduced from 20
-        elif days_old < 90:
-            score += 5   # Reduced from 10
-        elif days_old < 180:
-            score += 2   # Reduced from 5
-    except:
-        pass
-    
-    return score
+    content_score = min(content_score, 50)
+
+    # Calculate base score (must have content or heading match)
+    base_score = heading_score + content_score
+
+    # Only apply recency bonus if there's an actual match
+    if base_score > 0:
+        try:
+            date = datetime.fromisoformat(entry['date'])
+            days_old = (datetime.now() - date).days
+            if days_old < 30:
+                base_score += 10
+            elif days_old < 90:
+                base_score += 5
+            elif days_old < 180:
+                base_score += 2
+        except:
+            pass
+
+    return base_score
 
 def append_to_entry(search_term: str, new_content: str) -> Dict:
     """Find an entry and append content to it"""
