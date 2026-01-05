@@ -61,6 +61,9 @@ qn what if we added dark mode?
 
 # Skip enrichment for quick captures
 qn --no-enrich quick reminder to call mom
+
+# Use quotes for content with special characters (parentheses, $, etc.)
+qn "Read about ACFS (Agentic Coding Flywheel Setup) for VPS bootstrapping"
 ```
 
 ## Enrichment
