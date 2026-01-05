@@ -83,7 +83,7 @@ def extract_date_from_file(file_path: Path) -> str:
         year = parts[-2] if len(parts) >= 2 else str(datetime.now().year)
         month = parts[-1].split('-')[0] if '-' in parts[-1] else '01'
         return f"{year}-{month}-01"
-    except:
+    except Exception:
         return datetime.now().strftime("%Y-%m-%d")
 
 def add_note(heading: str, content: str, category: Optional[str] = None) -> Dict:
@@ -180,8 +180,8 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
                 base_score += 5
             elif days_old < 180:
                 base_score += 2
-        except:
-            pass
+        except Exception:
+            pass  # Date parsing failed, skip recency bonus
 
     return base_score
 
@@ -258,7 +258,7 @@ def append_to_entry(search_term: str, new_content: str) -> Dict:
         'alternatives': [r['heading'] for r in results[1:3]] if len(results) > 1 else []
     }
 
-def replace_entry(search_term: str, new_content: str, preserve_timestamp: bool = True) -> Dict:
+def replace_entry(search_term: str, new_content: str, preserve_timestamp: bool = True, target_file: str = None) -> Dict:
     """
     Replace an entry's content entirely (for async enrichment).
 
@@ -266,29 +266,52 @@ def replace_entry(search_term: str, new_content: str, preserve_timestamp: bool =
         search_term: Heading or unique identifier for the entry
         new_content: Complete new content to replace existing content
         preserve_timestamp: If True, keeps original **Created:** timestamp
+        target_file: If provided, use this file directly (avoids race conditions)
 
     Returns:
         Dict with status and entry info
     """
-    results = search_notes(search_term, max_results=1)
+    # If target_file provided, use it directly (race-condition safe)
+    if target_file:
+        file_path = NOTES_DIR / target_file
+        if not file_path.exists():
+            return {'status': 'error', 'message': f'Target file not found: {target_file}'}
 
-    if not results:
-        return {
-            'status': 'not_found',
-            'query': search_term,
-            'message': 'Entry not found for replacement'
-        }
+        # Find exact heading match in the specified file
+        entries = extract_entries(file_path)
+        target = None
+        for entry in entries:
+            if entry['heading'] == search_term:
+                target = entry
+                break
 
-    # Require minimum relevance threshold
-    if results[0]['relevance'] < 50:
-        return {
-            'status': 'not_found',
-            'query': search_term,
-            'message': 'No strong match found for replacement'
-        }
+        if not target:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': f'Heading not found in {target_file}'
+            }
+    else:
+        # Fall back to search (less safe, but works for manual use)
+        results = search_notes(search_term, max_results=1)
 
-    target = results[0]
-    file_path = NOTES_DIR / target['file']
+        if not results:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': 'Entry not found for replacement'
+            }
+
+        # Require minimum relevance threshold
+        if results[0]['relevance'] < 50:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': 'No strong match found for replacement'
+            }
+
+        target = results[0]
+        file_path = NOTES_DIR / target['file']
 
     # Read the file
     try:
@@ -668,7 +691,8 @@ def main():
         result = replace_entry(
             data.get('search_term', ''),
             data.get('content', ''),
-            data.get('preserve_timestamp', True)
+            data.get('preserve_timestamp', True),
+            data.get('target_file')  # Optional: specify exact file to avoid race conditions
         )
     elif command == 'reindex':
         result = update_index()

@@ -232,13 +232,14 @@ def call_enrichment_api(category: str, content: str) -> str:
         return None
 
 
-def replace_note(heading: str, content: str) -> dict:
+def replace_note(heading: str, content: str, target_file: str = None) -> dict:
     """
     Replace note content using notes_manager.py replace command.
 
     Args:
         heading: The note heading to find
         content: New content to replace with
+        target_file: Specific file to target (avoids race conditions)
 
     Returns:
         dict: Result from notes_manager.py
@@ -247,7 +248,8 @@ def replace_note(heading: str, content: str) -> dict:
         "command": "replace",
         "search_term": heading,
         "content": content,
-        "preserve_timestamp": True
+        "preserve_timestamp": True,
+        "target_file": target_file
     })
 
     try:
@@ -267,17 +269,23 @@ def replace_note(heading: str, content: str) -> dict:
         return {"status": "error", "message": str(e)}
 
 
-def enrich_note_async(heading: str, category: str, original_content: str):
+def enrich_note_async(heading: str, category: str, original_content: str, target_file: str):
     """
     Background thread for note enrichment.
     Called after sync save completes - user already saw "Note saved".
+
+    Args:
+        heading: The exact heading of the saved note
+        category: Note category for enrichment context
+        original_content: Original note content to enrich
+        target_file: Exact file where note was saved (avoids race conditions)
     """
     def _enrich():
         try:
             print("(Enriching in background...)", file=sys.stderr)
             enriched = call_enrichment_api(category, original_content)
             if enriched:
-                result = replace_note(heading, enriched)
+                result = replace_note(heading, enriched, target_file)
                 if result.get("status") == "success":
                     print(f"(Enriched: {heading[:40]}...)", file=sys.stderr)
                 else:
@@ -294,10 +302,12 @@ def enrich_note_async(heading: str, category: str, original_content: str):
 
 
 def _wait_for_enrichment():
-    """Wait for background enrichment on graceful exit."""
+    """Brief wait for background enrichment on exit."""
     global _enrichment_thread
     if _enrichment_thread and _enrichment_thread.is_alive():
-        _enrichment_thread.join(timeout=20.0)  # Allow time for API + file ops
+        # Short grace period - user already saw "Note saved"
+        # Enrichment will complete even if we exit (non-daemon thread)
+        _enrichment_thread.join(timeout=2.0)
 
 # Register atexit handler to wait for enrichment before exit
 atexit.register(_wait_for_enrichment)
@@ -349,14 +359,15 @@ def main():
 
     if result.get("status") == "success":
         heading = result.get("heading")
-        print(f"Note saved to {result.get('file')} ({category})")
+        target_file = result.get("file")
+        print(f"Note saved to {target_file} ({category})")
 
         if not api_success:
             print("(Category defaulted - API unavailable)", file=sys.stderr)
 
         # Phase 2: Async enrichment (non-blocking)
         if not skip_enrichment and api_success:
-            enrich_note_async(heading, category, note_text)
+            enrich_note_async(heading, category, note_text, target_file)
     else:
         print(f"Error: {result.get('message', 'Unknown error')}", file=sys.stderr)
         sys.exit(1)
