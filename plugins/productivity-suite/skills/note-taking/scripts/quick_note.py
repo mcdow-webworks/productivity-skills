@@ -274,28 +274,30 @@ def enrich_note_async(heading: str, category: str, original_content: str):
     """
     def _enrich():
         try:
+            print("(Enriching in background...)", file=sys.stderr)
             enriched = call_enrichment_api(category, original_content)
             if enriched:
                 result = replace_note(heading, enriched)
                 if result.get("status") == "success":
-                    # Optional feedback (goes to stderr, user may not see)
                     print(f"(Enriched: {heading[:40]}...)", file=sys.stderr)
                 else:
                     print(f"Replace failed: {result.get('message')}", file=sys.stderr)
+            else:
+                print("(Enrichment API returned no content)", file=sys.stderr)
         except Exception as e:
             # Never crash - note is already saved with original content
             print(f"Enrichment error: {e}", file=sys.stderr)
 
     global _enrichment_thread
-    _enrichment_thread = threading.Thread(target=_enrich, daemon=True)
+    _enrichment_thread = threading.Thread(target=_enrich, daemon=False)
     _enrichment_thread.start()
 
 
 def _wait_for_enrichment():
-    """Wait for background enrichment on graceful exit (max 5s)."""
+    """Wait for background enrichment on graceful exit."""
     global _enrichment_thread
     if _enrichment_thread and _enrichment_thread.is_alive():
-        _enrichment_thread.join(timeout=5.0)
+        _enrichment_thread.join(timeout=20.0)  # Allow time for API + file ops
 
 # Register atexit handler to wait for enrichment before exit
 atexit.register(_wait_for_enrichment)
