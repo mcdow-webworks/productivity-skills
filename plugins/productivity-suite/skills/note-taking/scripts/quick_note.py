@@ -3,13 +3,19 @@
 Fast note capture using Claude Haiku 4.5 for category inference.
 Part of productivity-skills/note-taking
 
+Phase 1: Sync save (< 2s) - User sees "Note saved"
+Phase 2: Async enrichment (background) - Expands note with context
+
 Usage: python quick_note.py "your note content"
+       python quick_note.py --no-enrich "quick note without enrichment"
 """
 
 import json
 import os
 import sys
 import subprocess
+import threading
+import atexit
 from pathlib import Path
 
 try:
@@ -19,12 +25,20 @@ try:
 except ImportError:
     ANTHROPIC_AVAILABLE = False
 
-# Configuration
+# Configuration - Category Inference (Phase 1)
 MODEL = "claude-haiku-4-5-20251001"
 MAX_TOKENS = 30
 TIMEOUT = 2.0  # seconds
 MAX_RETRIES = 1
 MAX_INPUT_LENGTH = 1000
+
+# Configuration - Enrichment (Phase 2)
+ENRICHMENT_MAX_TOKENS = 600
+ENRICHMENT_TIMEOUT = 15.0  # Longer timeout for background processing
+ENRICHMENT_TEMPERATURE = 0.3  # Slight creativity for enrichment
+
+# Thread tracking for graceful shutdown
+_enrichment_thread = None
 
 VALID_CATEGORIES = ["Work", "Learning", "Meeting", "Idea", "Decision", "Question", "Reference", "Note"]
 DEFAULT_CATEGORY = "Note"
@@ -44,6 +58,39 @@ Rules:
 - Note: general observations (default)
 
 Return ONLY the category name, nothing else."""
+
+ENRICHMENT_SYSTEM_PROMPT = """You are enhancing a quick note for future reference.
+Your goal is to make the note MORE USEFUL when the user revisits it later.
+
+Transform the note by:
+1. PRESERVE the original content and any URLs/links verbatim at the start
+2. ADD a concise **Definition:** if key concepts could use clarification
+3. ADD **Implications:** if the note has significance worth capturing
+4. ADD **Next Steps:** if there are obvious follow-up actions
+5. ADD **Related:** only if there are clear connections to common concepts
+
+Format rules:
+- Start with the original content, cleaned up for clarity
+- Add sections ONLY if they add real value (don't force all sections)
+- Keep total output under 400 words
+- Use markdown formatting (**bold** for section headers)
+- Never add a Created timestamp (added automatically)
+- If the note is already clear and complete, just clean it up slightly
+
+Example input:
+"link https://example.com study on Compression is Intelligence and its impact on software"
+
+Example output:
+Recent study link: https://example.com exploring "Compression is Intelligence" theory and its impact on software engineering.
+
+**Definition:** Compression as intelligence refers to the principle that effective learning and reasoning can be understood as compression - distilling complex information into simpler, more efficient representations that preserve essential meaning.
+
+**Implications:** This has profound relevance for software engineering:
+- Code abstraction is a form of compression (patterns, functions, libraries)
+- Good architecture compresses complexity into navigable structures
+- AI/ML models compress training data into generalizable rules
+
+**Next Steps:** Consider how this applies to current projects - are there opportunities to better compress complexity?"""
 
 
 def infer_category(note_text: str) -> tuple:
@@ -150,16 +197,128 @@ def add_note(category: str, content: str) -> dict:
         return {"status": "error", "message": str(e)}
 
 
+def call_enrichment_api(category: str, content: str) -> str:
+    """
+    Call API to enrich note content with context.
+
+    Args:
+        category: The note category
+        content: Original note content
+
+    Returns:
+        Enriched content string, or None on failure
+    """
+    if not ANTHROPIC_AVAILABLE or not os.environ.get("ANTHROPIC_API_KEY"):
+        return None
+
+    try:
+        client = Anthropic(timeout=ENRICHMENT_TIMEOUT, max_retries=1)
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=ENRICHMENT_MAX_TOKENS,
+            temperature=ENRICHMENT_TEMPERATURE,
+            system=ENRICHMENT_SYSTEM_PROMPT,
+            messages=[{
+                "role": "user",
+                "content": f"Category: {category}\nOriginal note: {content}\n\nEnrich this note for future reference."
+            }]
+        )
+        return response.content[0].text.strip()
+
+    except Exception as e:
+        # Log error but don't crash - original note is already saved
+        print(f"Enrichment API error: {e}", file=sys.stderr)
+        return None
+
+
+def replace_note(heading: str, content: str) -> dict:
+    """
+    Replace note content using notes_manager.py replace command.
+
+    Args:
+        heading: The note heading to find
+        content: New content to replace with
+
+    Returns:
+        dict: Result from notes_manager.py
+    """
+    script_dir = Path(__file__).parent
+    notes_manager = script_dir / "notes_manager.py"
+
+    cmd_input = json.dumps({
+        "command": "replace",
+        "search_term": heading,
+        "content": content,
+        "preserve_timestamp": True
+    })
+
+    try:
+        result = subprocess.run(
+            ["python", str(notes_manager)],
+            input=cmd_input,
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+
+        if result.returncode == 0:
+            return json.loads(result.stdout)
+        return {"status": "error", "message": result.stderr}
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+def enrich_note_async(heading: str, category: str, original_content: str):
+    """
+    Background thread for note enrichment.
+    Called after sync save completes - user already saw "Note saved".
+    """
+    def _enrich():
+        try:
+            enriched = call_enrichment_api(category, original_content)
+            if enriched:
+                result = replace_note(heading, enriched)
+                if result.get("status") == "success":
+                    # Optional feedback (goes to stderr, user may not see)
+                    print(f"(Enriched: {heading[:40]}...)", file=sys.stderr)
+                else:
+                    print(f"Replace failed: {result.get('message')}", file=sys.stderr)
+        except Exception as e:
+            # Never crash - note is already saved with original content
+            print(f"Enrichment error: {e}", file=sys.stderr)
+
+    global _enrichment_thread
+    _enrichment_thread = threading.Thread(target=_enrich, daemon=True)
+    _enrichment_thread.start()
+
+
+def _wait_for_enrichment():
+    """Wait for background enrichment on graceful exit (max 5s)."""
+    global _enrichment_thread
+    if _enrichment_thread and _enrichment_thread.is_alive():
+        _enrichment_thread.join(timeout=5.0)
+
+# Register atexit handler to wait for enrichment before exit
+atexit.register(_wait_for_enrichment)
+
+
 def main():
     """Main entry point for quick note capture."""
 
+    # Check for --no-enrich flag
+    skip_enrichment = "--no-enrich" in sys.argv
+    args = [a for a in sys.argv[1:] if a != "--no-enrich"]
+
     # Validate input
-    if len(sys.argv) < 2:
-        print("Usage: quick_note.py <note content>", file=sys.stderr)
-        print("\nExample: quick_note.py meeting with Jim about pricing", file=sys.stderr)
+    if len(args) < 1:
+        print("Usage: quick_note.py [--no-enrich] <note content>", file=sys.stderr)
+        print("\nExamples:", file=sys.stderr)
+        print("  quick_note.py meeting with Jim about pricing", file=sys.stderr)
+        print("  quick_note.py --no-enrich quick reminder", file=sys.stderr)
         sys.exit(1)
 
-    note_text = " ".join(sys.argv[1:])
+    note_text = " ".join(args)
 
     if not note_text.strip():
         print("Error: Note content required", file=sys.stderr)
@@ -184,16 +343,20 @@ def main():
         print("  macOS/Linux: export ANTHROPIC_API_KEY='sk-ant-...'", file=sys.stderr)
         sys.exit(1)
 
-    # Infer category
+    # Phase 1: Sync save with category inference
     category, api_success = infer_category(note_text)
-
-    # Add note
     result = add_note(category, note_text)
 
     if result.get("status") == "success":
+        heading = result.get("heading")
         print(f"Note saved to {result.get('file')} ({category})")
+
         if not api_success:
             print("(Category defaulted - API unavailable)", file=sys.stderr)
+
+        # Phase 2: Async enrichment (non-blocking)
+        if not skip_enrichment and api_success:
+            enrich_note_async(heading, category, note_text)
     else:
         print(f"Error: {result.get('message', 'Unknown error')}", file=sys.stderr)
         sys.exit(1)

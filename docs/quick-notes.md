@@ -1,12 +1,15 @@
 # Quick Notes CLI
 
-Fast note capture from the command line using Claude Haiku 4.5 for automatic categorization.
+Fast note capture from the command line using Claude Haiku 4.5 for automatic categorization and intelligent enrichment.
 
 ## Overview
 
-The `qn` command provides sub-3-second note capture that integrates with your existing notes system. It uses Claude Haiku 4.5 to automatically categorize notes.
+The `qn` command provides sub-2-second note capture that integrates with your existing notes system. It uses Claude Haiku 4.5 to:
 
-**Cost:** ~$0.00015 per note (~$0.15 per 1000 notes)
+1. **Categorize** your note instantly (sync)
+2. **Enrich** the note with context in the background (async)
+
+**Cost:** ~$0.0022 per enriched note (~$2.20 per 1000 notes)
 
 ## Install
 
@@ -55,6 +58,53 @@ qn learned how async Python works
 
 qn what if we added dark mode?
 # Saves as: # Idea - what if we added dark mode?
+
+# Skip enrichment for quick captures
+qn --no-enrich quick reminder to call mom
+```
+
+## Enrichment
+
+After your note is saved (~1.5s), the CLI enriches it in the background with:
+
+- **Definition:** Clarifies key concepts
+- **Implications:** Captures significance and relevance
+- **Next Steps:** Anticipates follow-up actions
+- **Related:** Connects to common concepts
+
+### Example
+
+**Input:**
+```powershell
+qn link https://arxiv.org/paper123 study on Compression is Intelligence
+```
+
+**After enrichment (~10s later):**
+```markdown
+# Reference - link https://arxiv.org/paper123 study on Compression...
+Recent study link: https://arxiv.org/paper123 exploring "Compression is Intelligence"
+theory and its impact on software engineering.
+
+**Definition:** Compression as intelligence refers to distilling complex information
+into simpler representations that preserve essential meaning while reducing redundancy.
+
+**Implications:** This has profound relevance for software engineering:
+- Code abstraction is a form of compression (patterns, functions, libraries)
+- Good architecture compresses complexity into navigable structures
+- AI/ML models compress training data into generalizable rules
+
+**Next Steps:** Consider how this applies to current projects - are there
+opportunities to better compress complexity?
+
+**Created:** 2026-01-04
+```
+
+### Skipping Enrichment
+
+Use `--no-enrich` for quick captures that don't need expansion:
+
+```powershell
+qn --no-enrich buy milk
 ```
 
 ## Categories
@@ -85,6 +135,7 @@ Notes are saved to the same location as the main note-taking skill:
 - **No API key:** Clear error with setup instructions
 - **API timeout:** Falls back to "Note" category (data never lost)
 - **Invalid API key:** Authentication error with link to console
+- **Enrichment fails:** Original note preserved, enrichment silently skipped
 
 ## Troubleshooting
 
@@ -122,9 +173,10 @@ Or use the note-taking skill: "Reindex my notes"
 | Component | Time |
 |-----------|------|
 | PowerShell startup | ~100ms |
-| Python + API call | ~800ms |
+| Category inference | ~800ms |
 | File I/O | ~300ms |
-| **Total** | **~1.2-2s** |
+| **User sees "Note saved"** | **~1.2-2s** |
+| Enrichment (background) | ~5-10s |
 
 ## See Also
 
