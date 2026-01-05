@@ -46,7 +46,7 @@ function qn {
         return
     }
     $noteContent = $args -join " "
-    python "QUICK_NOTE_PATH_PLACEHOLDER" $noteContent
+    python "QUICK_NOTE_PATH_PLACEHOLDER" "$noteContent"
 }
 '@
 
