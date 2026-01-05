@@ -83,7 +83,7 @@ def extract_date_from_file(file_path: Path) -> str:
         year = parts[-2] if len(parts) >= 2 else str(datetime.now().year)
         month = parts[-1].split('-')[0] if '-' in parts[-1] else '01'
         return f"{year}-{month}-01"
-    except:
+    except Exception:
         return datetime.now().strftime("%Y-%m-%d")
 
 def add_note(heading: str, content: str, category: Optional[str] = None) -> Dict:
@@ -180,8 +180,8 @@ def calculate_relevance(entry: Dict, query: str, query_terms: List[str]) -> int:
                 base_score += 5
             elif days_old < 180:
                 base_score += 2
-        except:
-            pass
+        except Exception:
+            pass  # Date parsing failed, skip recency bonus
 
     return base_score
 
@@ -256,6 +256,121 @@ def append_to_entry(search_term: str, new_content: str) -> Dict:
         'heading': target['heading'],
         'file': target['file'],
         'alternatives': [r['heading'] for r in results[1:3]] if len(results) > 1 else []
+    }
+
+def replace_entry(search_term: str, new_content: str, preserve_timestamp: bool = True, target_file: str = None) -> Dict:
+    """
+    Replace an entry's content entirely (for async enrichment).
+
+    Args:
+        search_term: Heading or unique identifier for the entry
+        new_content: Complete new content to replace existing content
+        preserve_timestamp: If True, keeps original **Created:** timestamp
+        target_file: If provided, use this file directly (avoids race conditions)
+
+    Returns:
+        Dict with status and entry info
+    """
+    # If target_file provided, use it directly (race-condition safe)
+    if target_file:
+        file_path = NOTES_DIR / target_file
+        if not file_path.exists():
+            return {'status': 'error', 'message': f'Target file not found: {target_file}'}
+
+        # Find exact heading match in the specified file
+        entries = extract_entries(file_path)
+        target = None
+        for entry in entries:
+            if entry['heading'] == search_term:
+                target = entry
+                break
+
+        if not target:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': f'Heading not found in {target_file}'
+            }
+    else:
+        # Fall back to search (less safe, but works for manual use)
+        results = search_notes(search_term, max_results=1)
+
+        if not results:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': 'Entry not found for replacement'
+            }
+
+        # Require minimum relevance threshold
+        if results[0]['relevance'] < 50:
+            return {
+                'status': 'not_found',
+                'query': search_term,
+                'message': 'No strong match found for replacement'
+            }
+
+        target = results[0]
+        file_path = NOTES_DIR / target['file']
+
+    # Read the file
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    except Exception as e:
+        return {'status': 'error', 'message': f"Failed to read file: {e}"}
+
+    # Extract original Created timestamp if preserving
+    original_timestamp = None
+    if preserve_timestamp:
+        match = re.search(r'\*\*Created:\*\* (\d{4}-\d{2}-\d{2})', target['content'])
+        if match:
+            original_timestamp = match.group(1)
+
+    # Use original timestamp or current date
+    timestamp = original_timestamp or datetime.now().strftime('%Y-%m-%d')
+
+    # Build replacement entry (heading + new content + timestamp)
+    replacement_entry = f"# {target['heading']}\n{new_content.strip()}\n\n**Created:** {timestamp}\n"
+
+    # Find and replace the entry
+    lines = content.split('\n')
+    new_lines = []
+    in_target = False
+    replaced = False
+
+    for i, line in enumerate(lines):
+        if line.strip() == f"# {target['heading']}":
+            # Found target entry, replace it
+            in_target = True
+            new_lines.append(replacement_entry)
+            replaced = True
+        elif in_target and line.startswith('# ') and not line.startswith('## '):
+            # Found next entry, exit target zone
+            in_target = False
+            new_lines.append(line)
+        elif not in_target:
+            new_lines.append(line)
+        # Skip lines while in_target (they're being replaced)
+
+    if not replaced:
+        return {'status': 'error', 'message': 'Failed to locate entry in file'}
+
+    # Write back
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(new_lines))
+    except Exception as e:
+        return {'status': 'error', 'message': f"Failed to write file: {e}"}
+
+    # Update index
+    update_index()
+
+    return {
+        'status': 'success',
+        'heading': target['heading'],
+        'file': target['file'],
+        'replaced': True
     }
 
 def update_index() -> Dict:
@@ -572,6 +687,13 @@ def main():
             data.get('search_term', ''),
             data.get('content', '')
         )
+    elif command == 'replace':
+        result = replace_entry(
+            data.get('search_term', ''),
+            data.get('content', ''),
+            data.get('preserve_timestamp', True),
+            data.get('target_file')  # Optional: specify exact file to avoid race conditions
+        )
     elif command == 'reindex':
         result = update_index()
     elif command == 'stats':
@@ -591,6 +713,7 @@ def main():
                 'add': 'Add a new note',
                 'search': 'Search for notes',
                 'append': 'Append to existing note',
+                'replace': 'Replace entry content entirely',
                 'reindex': 'Rebuild search index',
                 'clean-index': 'Safely remove and rebuild index',
                 'validate': 'Check note files for issues',

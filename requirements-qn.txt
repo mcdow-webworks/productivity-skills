@@ -1,0 +1,4 @@
+# Requirements for quick note CLI (qn)
+# Install with: pip install -r requirements-qn.txt
+
+anthropic>=0.40.0
