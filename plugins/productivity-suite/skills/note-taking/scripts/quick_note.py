@@ -18,6 +18,10 @@ import threading
 import atexit
 from pathlib import Path
 
+# Capture script directory at module load time (required for threading)
+SCRIPT_DIR = Path(__file__).parent
+NOTES_MANAGER = SCRIPT_DIR / "notes_manager.py"
+
 try:
     from anthropic import Anthropic
     import anthropic
@@ -154,11 +158,8 @@ def add_note(category: str, content: str) -> dict:
     Returns:
         dict: Result from notes_manager.py
     """
-    script_dir = Path(__file__).parent
-    notes_manager = script_dir / "notes_manager.py"
-
-    if not notes_manager.exists():
-        return {"status": "error", "message": f"notes_manager.py not found at {notes_manager}"}
+    if not NOTES_MANAGER.exists():
+        return {"status": "error", "message": f"notes_manager.py not found at {NOTES_MANAGER}"}
 
     # Format heading as "Category - Brief description"
     # Extract first ~50 chars as description, clean up newlines
@@ -175,7 +176,7 @@ def add_note(category: str, content: str) -> dict:
 
     try:
         result = subprocess.run(
-            ["python", str(notes_manager)],
+            ["python", str(NOTES_MANAGER)],
             input=cmd_input,
             capture_output=True,
             text=True,
@@ -242,9 +243,6 @@ def replace_note(heading: str, content: str) -> dict:
     Returns:
         dict: Result from notes_manager.py
     """
-    script_dir = Path(__file__).parent
-    notes_manager = script_dir / "notes_manager.py"
-
     cmd_input = json.dumps({
         "command": "replace",
         "search_term": heading,
@@ -254,7 +252,7 @@ def replace_note(heading: str, content: str) -> dict:
 
     try:
         result = subprocess.run(
-            ["python", str(notes_manager)],
+            ["python", str(NOTES_MANAGER)],
             input=cmd_input,
             capture_output=True,
             text=True,
