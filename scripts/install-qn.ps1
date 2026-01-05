@@ -35,43 +35,23 @@ if (-not (Test-Path $profileDir)) {
     Write-Host "Created profile directory: $profileDir"
 }
 
-# Define the qn function
-$functionDef = @"
+# Define the qn function - using single quotes to avoid expansion issues
+$functionDef = @'
 
 # Quick Note - Fast note capture using Claude Haiku 4.5
 # Part of productivity-skills: https://github.com/mcdow-webworks/productivity-skills
 function qn {
-    <#
-    .SYNOPSIS
-    Quick note capture using Claude Haiku 4.5 for automatic categorization.
-
-    .DESCRIPTION
-    Captures notes quickly with automatic category inference using Claude Haiku 4.5.
-    Notes are saved to ~/Documents/notes/YYYY/MM-Month.md (or OneDrive equivalent).
-
-    .EXAMPLE
-    qn meeting with Jim about AutoMap pricing
-    # Saves as: # Meeting - meeting with Jim about AutoMap pricing
-
-    .EXAMPLE
-    qn "learned how async Python works"
-    # Saves as: # Learning - learned how async Python works
-    #>
-
-    if (`$args.Count -eq 0) {
+    if ($args.Count -eq 0) {
         Write-Host "Usage: qn <note content>" -ForegroundColor Yellow
-        Write-Host ""
-        Write-Host "Examples:"
-        Write-Host "  qn meeting with Jim about pricing"
-        Write-Host "  qn `"learned how to use async Python`""
-        Write-Host "  qn what if we added dark mode?"
         return
     }
-
-    `$noteContent = `$args -join " "
-    python "$quickNotePath" `$noteContent
+    $noteContent = $args -join " "
+    python "QUICK_NOTE_PATH_PLACEHOLDER" $noteContent
 }
-"@
+'@
+
+# Replace placeholder with actual path
+$functionDef = $functionDef -replace 'QUICK_NOTE_PATH_PLACEHOLDER', $quickNotePath
 
 # Check if qn function already exists in profile
 if (Test-Path $profilePath) {
