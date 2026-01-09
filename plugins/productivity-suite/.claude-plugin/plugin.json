@@ -1,0 +1,21 @@
+{
+  "name": "productivity-suite",
+  "version": "1.0.0",
+  "description": "Complete productivity suite including AI-navigable note-taking, task management, and knowledge capture. Transform markdown notes into a searchable second brain.",
+  "author": {
+    "name": "Tony McDow",
+    "email": "mcdow@webworks.com",
+    "url": "https://github.com/mcdow-webworks"
+  },
+  "homepage": "https://github.com/mcdow-webworks/productivity-skills",
+  "repository": "https://github.com/mcdow-webworks/productivity-skills",
+  "license": "MIT",
+  "keywords": [
+    "notes",
+    "productivity",
+    "knowledge-management",
+    "markdown",
+    "second-brain",
+    "task-management"
+  ]
+}
