@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "productivity-skills",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code skills marketplace for AI-native productivity including note-taking, task management, and personal knowledge management",
   "owner": {
     "name": "Tony McDow",
@@ -17,7 +17,14 @@
       },
       "source": "./plugins/productivity-suite",
       "category": "productivity",
-      "tags": ["notes", "productivity", "knowledge-management", "markdown", "second-brain", "task-management"],
+      "tags": [
+        "notes",
+        "productivity",
+        "knowledge-management",
+        "markdown",
+        "second-brain",
+        "task-management"
+      ],
       "strict": false
     }
   ]

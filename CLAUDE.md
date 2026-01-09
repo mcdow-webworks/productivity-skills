@@ -323,6 +323,29 @@ Markdown headings with leading whitespace (e.g., ` # Heading`) were not recogniz
 ### 2025-11-22: Scoring Bonuses Should Only Apply to Actual Matches
 Applying scoring bonuses (like recency) unconditionally to all entries creates false positives where recent unrelated entries appear in search results. Solution: Calculate base score from content/heading matches first, then only apply bonuses when `base_score > 0`. This ensures bonuses enhance relevant results rather than creating false positives.
 
+## Version Management
+
+Bump the plugin version before creating a PR using the bump script:
+
+```bash
+./scripts/bump-version.sh patch  # 1.0.0 -> 1.0.1 (bug fixes)
+./scripts/bump-version.sh minor  # 1.0.0 -> 1.1.0 (new features)
+./scripts/bump-version.sh major  # 1.0.0 -> 2.0.0 (breaking changes)
+```
+
+The script updates both `plugin.json` and `marketplace.json` to keep versions synchronized.
+
+**When to bump:**
+- `patch`: Bug fixes, documentation updates, minor improvements
+- `minor`: New skills, new features, enhancements
+- `major`: Breaking changes, major restructuring
+
+**Workflow:**
+1. Make your changes
+2. Run `./scripts/bump-version.sh <type>`
+3. Include the version bump in your PR
+4. Merge PR - version is already updated
+
 ## Git Workflow Notes
 
 This repository follows standard GitHub workflow:
