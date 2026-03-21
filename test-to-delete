@@ -46,3 +46,6 @@ AutoMap exe: C:\Program Files\WebWorks\ePublisher\2025.1\ePublisher AutoMap\WebW
 
 $ wc -c plugins/productivity-suite/skills/note-taking/SKILL.md
 6081 characters (127 lines) in plugins/productivity-suite/skills/note-taking/SKILL.md
+
+$ wc -w plugins/productivity-suite/skills/note-taking/SKILL.md
+548 words in plugins/productivity-suite/skills/note-taking/SKILL.md
