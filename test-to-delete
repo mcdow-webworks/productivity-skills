@@ -1,0 +1,39 @@
+=== Tools Inventory ===
+Timestamp: 2026-03-21T22:58:22Z
+
+$ which gh && gh --version
+/c/Program Files/GitHub CLI/gh
+gh version 2.87.0 (2026-02-18)
+https://github.com/cli/cli/releases/tag/v2.87.0
+
+$ which jq && jq --version
+/c/Users/mcdow/AppData/Local/Microsoft/WinGet/Packages/jqlang.jq_Microsoft.Winget.Source_8wekyb3d8bbwe/jq
+jq-1.8.1
+
+$ which python3 || which python
+/c/Python313/python3
+
+$ echo "$PATH" | tr ':' '\n' | head -20
+/mingw64/bin
+/usr/bin
+/c/Users/mcdow/bin
+/mingw64/bin
+/usr/bin
+/c/Users/mcdow/bin
+/c/Program Files/Common Files/Oracle/Java/javapath
+/c/Windows/system32
+/c/Windows
+/c/Windows/System32/Wbem
+/c/Windows/System32/WindowsPowerShell/v1.0
+/c/Windows/System32/OpenSSH
+/c/Users/mcdow/AppData/Local/nvm
+/c/nvm4w/nodejs
+/c/Program Files/Docker/Docker/resources/bin
+/c/Program Files/TortoiseSVN/bin
+/c/Program Files/PuTTY
+/c/Program Files/TortoiseGit/bin
+/usr/bin
+/c/Program Files/dotnet
+
+$ echo "Tools inventory complete"
+Tools inventory complete
