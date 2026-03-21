@@ -1,0 +1,18 @@
+=== System Resources ===
+Timestamp: 2026-03-21 22:58:21 UTC
+
+$ df -h / 2>/dev/null || df -h
+Filesystem            Size  Used Avail Use% Mounted on
+C:/Program Files/Git  954G  283G  672G  30% /
+
+$ free -h 2>/dev/null || echo "free not available"
+free not available
+
+$ cat /proc/cpuinfo 2>/dev/null | grep "model name" | head -1 || echo "cpuinfo not available"
+model name	: Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
+
+$ uptime
+uptime: command not found
+
+$ echo "System resources check complete"
+System resources check complete
