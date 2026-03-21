@@ -43,3 +43,6 @@ No job or project file specified
 $ WebWorks.Automap.exe --version (via automap skill)
 AutoMap exe: C:\Program Files\WebWorks\ePublisher\2025.1\ePublisher AutoMap\WebWorks.Automap.exe
 2025.1.4652
+
+$ wc -c plugins/productivity-suite/skills/note-taking/SKILL.md
+6081 characters (127 lines) in plugins/productivity-suite/skills/note-taking/SKILL.md
