@@ -1,0 +1,21 @@
+Smoke test run at: 2026-03-21T22:50:21Z
+
+$ hostname
+Trantor
+
+$ whoami
+mcdow
+
+$ which claude && claude --version
+/c/Users/mcdow/.local/bin/claude
+2.1.81 (Claude Code)
+
+$ node --version
+v22.18.0
+
+$ git remote -v
+origin	git@github.com:mcdow-webworks/productivity-skills.git (fetch)
+origin	git@github.com:mcdow-webworks/productivity-skills.git (push)
+
+$ echo "Hello from Claude Windows Worker"
+Hello from Claude Windows Worker
