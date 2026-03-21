@@ -49,3 +49,6 @@ $ wc -c plugins/productivity-suite/skills/note-taking/SKILL.md
 
 $ wc -w plugins/productivity-suite/skills/note-taking/SKILL.md
 548 words in plugins/productivity-suite/skills/note-taking/SKILL.md
+
+$ python -c "count paragraphs" plugins/productivity-suite/skills/note-taking/SKILL.md
+23 paragraphs in plugins/productivity-suite/skills/note-taking/SKILL.md
