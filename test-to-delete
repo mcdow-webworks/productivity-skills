@@ -1,0 +1,27 @@
+$ uname -a
+MINGW64_NT-10.0-19045 Trantor 3.6.3-7674c51e.x86_64 2025-07-01 09:13 UTC x86_64 Msys
+
+$ pwd
+/c/Users/mcdow/AppData/Local/claude-docker-worker/workdir/repos/mcdow-webworks-productivity-skills
+
+$ ls -la
+.claude-plugin/
+.github/
+docs/
+plans/
+plugins/
+scripts/
+.gitignore  704B
+CLAUDE.md  17.0K
+LICENSE  1.1K
+README.md  9.2K
+note-taking-skill.zip  8.4K
+requirements-qn.txt  113B
+
+6 files, 6 dirs (2(no ext) 2.md 1.zip 1.txt)
+
+$ git --version
+git version 2.50.1.windows.1
+
+$ echo "Hello from Claude Dockworker"
+Hello from Claude Dockworker
