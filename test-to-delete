@@ -5,23 +5,28 @@ $ pwd
 /c/Users/mcdow/AppData/Local/claude-docker-worker/workdir/repos/mcdow-webworks-productivity-skills
 
 $ ls -la
-.claude-plugin/
-.github/
-docs/
-plans/
-plugins/
-scripts/
-.gitignore  704B
-CLAUDE.md  17.0K
-LICENSE  1.1K
-README.md  9.2K
-note-taking-skill.zip  8.4K
-requirements-qn.txt  113B
-
-6 files, 6 dirs (2(no ext) 2.md 1.zip 1.txt)
+total 45
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 .
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 ..
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 .claude-plugin
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 .git
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 .github
+-rw-r--r-- 1 mcdow 197609   704 Mar 21 18:02 .gitignore
+-rw-r--r-- 1 mcdow 197609 17371 Mar 21 18:02 CLAUDE.md
+-rw-r--r-- 1 mcdow 197609  1092 Mar 21 18:02 LICENSE
+-rw-r--r-- 1 mcdow 197609  9408 Mar 21 18:02 README.md
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 docs
+-rw-r--r-- 1 mcdow 197609  8579 Mar 21 18:02 note-taking-skill.zip
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 plans
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 plugins
+-rw-r--r-- 1 mcdow 197609   113 Mar 21 18:02 requirements-qn.txt
+drwxr-xr-x 1 mcdow 197609     0 Mar 21 18:02 scripts
 
 $ git --version
 git version 2.50.1.windows.1
 
 $ echo "Hello from Claude Dockworker"
 Hello from Claude Dockworker
+
+$ WebWorks.Automap.exe --version
+2025.1.4652
