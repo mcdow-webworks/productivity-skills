@@ -25,3 +25,16 @@ git version 2.50.1.windows.1
 
 $ echo "Hello from Claude Dockworker"
 Hello from Claude Dockworker
+
+$ WebWorks.AutoMap.exe --version
+WebWorks ePublisher AutoMap 2025.1.4651.0
+
+error:  unknown option specified (--version)
+No job or project file specified
+
+License key refresh not required.  Existing keys are valid.
+Usage:  WebWorks.Automap.exe [-f|--nonotify] [-s|--stagingdir directory]
+        [-t|--target target1,target2] [-n|--nodeploy] [-u|--update]
+        [-j|--justupdate] [-d|--deployfolder directory] [-c|--clean]
+        [-l|--cleandeploy] [--skip-reports] [-?|--help] [--usage]
+        ePublisher project or Automap job file
