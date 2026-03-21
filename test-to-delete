@@ -39,3 +39,7 @@ Usage:  WebWorks.Automap.exe [-f|--nonotify] [-s|--stagingdir directory]
         [-l|--cleandeploy] [--skip-reports] [-?|--help] [--usage]
         ePublisher project or Automap job file
 No job or project file specified
+
+$ WebWorks.Automap.exe --version (via automap skill)
+AutoMap exe: C:\Program Files\WebWorks\ePublisher\2025.1\ePublisher AutoMap\WebWorks.Automap.exe
+2025.1.4652
