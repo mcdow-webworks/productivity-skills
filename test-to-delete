@@ -30,3 +30,8 @@ Hello from Claude Dockworker
 
 $ WebWorks.Automap.exe --version
 2025.1.4652
+
+--- Additional test: AutoMap --version ---
+
+$ WebWorks.Automap.exe --version
+2025.1.4652
