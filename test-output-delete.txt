@@ -1,0 +1,10 @@
+CLAUDE.md
+docs
+LICENSE
+note-taking-skill.zip
+plans
+plugins
+README.md
+requirements-qn.txt
+scripts
+test-windworker.txt
